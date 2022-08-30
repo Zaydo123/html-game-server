@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>HW <%=new Date().toISOString().slice(0, 10)%></title>
+        <link rel="icon" type="image/x-icon" href="doc.ico">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="index.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="load_content.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Physics Central</h1>
+            <h3 id="visitorsCounter">Total Visits: </h3>
+            <button onclick="location.href = '/requestapp';" id="rqbutton">Request Game</button>
+        </div>
+        <div id="app-list">
+            <h1 hidden="true">Hi bozo</h1>
+            <% for(let i=0;i<appList.apps.length ;i++){ %>
+                <div class="app-item" onclick="location.href='/app/<%=appList.apps[i].id%>'">
+                    <h3><%=appList.apps[i].name%></h3>
+                </div>
+            <%} %>
+        </div>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <a href="https://github.com/Zaydo123/html5-game-server">This is an open source project. If you'd like to contribute or download, please click me.</a>
+    </body>
+</html>

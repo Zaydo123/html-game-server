@@ -1,0 +1,29 @@
+body{
+    background-color: #ebebe536;
+}
+
+.header{
+    text-align: center;
+}
+
+a {
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
+  }
+
+.app-item{
+    margin:auto;
+    width: 50%;
+    padding: 1rem;
+    box-shadow:  20px 20px 60px #ebebe536,
+    -20px -20px 60px #90be6d7e;
+    text-align: center;
+    color:black;
+    overflow: auto;
+}
+
+#app-list {
+    border-radius: 50px;
+    background: #ebebe536;
+    padding: 1rem;
+}
