@@ -11,6 +11,6 @@ The index.ejs file in the /views directory is editable to customize the website 
 **boom now you have games**
 
 ## To do: 
-[] Add AWS Deployment support (find out how tf to deploy)
-[] UI fix
-[] More Games
+- Add AWS Deployment support (find out how tf to deploy)
+- UI fix
+- More Games
