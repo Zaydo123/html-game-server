@@ -6,8 +6,6 @@ The index.ejs file in the /views directory is editable to customize the website 
 
 ## Setup is simple:
 1. Install <a href='https://nodejs.org/en/'>Node JS</a>
-2. Run ```npm init -y``` in the cloned repository's directory (using terminal, cmd, etc...)
-3. Run ```npm install express``` and ```npm install ejs```
-4. Drag and drop games into public/app
-5. Launch server.js to start
-6. Boom, you have games.
+2. Run ```npm install``` in the cloned repository's directory (using terminal, cmd, etc...)
+3. Run server.js to start program ```node server.js```
+**boom now you have games**
