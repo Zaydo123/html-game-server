@@ -1,7 +1,6 @@
 # html5-game-server
 
 This is a quick and simple WebGL/Html5 game server. 
-You can navigate to ```http://localhost:3000``` and view the landing page. 
 The index.ejs file in the /views directory is editable to customize the website home page.
 
 ## Setup is simple:
