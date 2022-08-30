@@ -4,6 +4,9 @@ const app = express();
 let bodyParser = require('body-parser');
 const fs = require('fs');
 
+
+let port = process.env.PORT || 3000;
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true })); 
 //use ejs to render
@@ -109,6 +112,6 @@ app.post('/requestapp',(req,res)=>{
 
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(port, () => {
+    console.log('Server is running on port ' + port);
 } );
