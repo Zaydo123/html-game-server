@@ -5,7 +5,7 @@ let bodyParser = require('body-parser');
 const fs = require('fs');
 
 
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 443;
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true })); 
