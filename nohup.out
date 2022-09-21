@@ -1,0 +1,18 @@
+Server is running on port 3000
+Server is running on port 3000
+Server is running on port 3000
+
+> html-game-server@1.0.0 start
+> node server.js
+
+Server is running on port 3000
+{ name: 'Zayd', email: 'balls', 'App Name': 'cuuuupp' }
+{ name: 'poop', email: 'poop', 'App Name': 'poop' }
+
+> html-game-server@1.0.0 start
+> node server.js
+
+Server is running on port 3000
+Server is running on port 3000
+Server is running on port 3000
+Server is running on port 3000
