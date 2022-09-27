@@ -12,6 +12,6 @@ The index.ejs file in the /views directory is editable to customize the website 
 **boom now you have games**
 
 ## To do: 
-- UI fix
-- More Games
-- Rate functionality/report buttons
+- [x]  UI fix
+- [ ] More Games
+- [ ] Rate functionality/report buttons
