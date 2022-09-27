@@ -1,17 +1,57 @@
 //import express
 const express = require('express');
 const app = express();
-let bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require("path");
+const bodyParser = require('body-parser');
+
+let ignoredRoutes = ['','visits','requestapp'];
 
 
 let port = process.env.PORT || 3000;
 
-app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true })); 
-//use ejs to render
-app.set('view engine', 'ejs');
+//see which static files most popular and how many times they are requested
 
+app.use(function (req, res, next) {
+    let filename = path.basename(req.url);
+    let extension = path.extname(filename);
+    if (extension === ''&& ignoredRoutes.indexOf(filename) == -1) {
+        console.log('Request for ' + filename + ' received');
+        //open visits.json file and update main.apps
+        fs.readFile('public/visits.json', 'utf8', function readFileCallback(err, data){
+            if (err){
+                console.log(err);
+            } else {
+                obj = JSON.parse(data); //now it an object
+                //if cant find app in obj.main.apps[index].route_name then add it
+                let found = false;
+                for(let i = 0; i < obj.main.apps.length; i++){
+                    if(obj.main.apps[i].route_name == filename){
+                        obj.main.apps[i].visits++;
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                    obj.main.apps.push({route_name:filename,visits:1});
+                }
+
+                json = JSON.stringify(obj); //convert it back to json
+                fs.writeFile('public/visits.json', json, 'utf8', (err)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                }); // write it back 
+            }
+        });
+            
+    }
+    next();
+});
+app.use(express.static('public'));
+
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
     //res.sendFile(__dirname + '/index.html');
     fs.readdir(__dirname + '/public/app', (err, files) => {
@@ -44,11 +84,7 @@ app.get('/', (req, res) => {
 
 });
 
-app.get('/app/:item',(req,res)=>{
-    let item = req.params.item;
-    res.sendFile(__dirname + '/public/app/'+item+'/index.html');
-});
-
+//gets visitor count but want to add reports count
 
 function getVisits(){
     return new Promise((resolve,reject)=>{
@@ -87,18 +123,20 @@ app.get('/requestapp',(req,res)=>{
     res.render('requestapp.ejs');
 });
 
+
+
 //accept post request
 app.post('/requestapp',(req,res)=>{
     //log data from form request
     console.log(req.body);
     //append data to requestapps.json file
-    fs.readFile(__dirname + '/public/requestapps.json', (err, data) => {
+    fs.readFile(__dirname + '/requestapps.json', (err, data) => {
         if (err) {
             console.log(err);
         } else {
             let file = JSON.parse(data);
             file.requests.push(req.body);
-            fs.writeFile(__dirname + '/public/requestapps.json', JSON.stringify(file), (err) => {
+            fs.writeFile(__dirname + '/requestapps.json', JSON.stringify(file), (err) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -111,6 +149,7 @@ app.post('/requestapp',(req,res)=>{
     res.redirect('/');
 
 });
+
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);

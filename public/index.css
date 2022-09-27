@@ -1,29 +1,51 @@
 body{
-    background-color: #ebebe536;
+    background-color: #E9724C;
 }
 
 .header{
     text-align: center;
+    font-size: 20px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    width: 50%;
+    padding: 1rem;
+    text-shadow: 2px 2px 4px #000000;
+    margin: auto;    
+    background-color: #ffc75765;
 }
 
 a {
     color: inherit; /* blue colors for links too */
     text-decoration: inherit; /* no underline */
   }
-
 .app-item{
     margin:auto;
     width: 50%;
+    transition: all 0.5s ease;
+    border: 1px solid black;
     padding: 1rem;
-    box-shadow:  20px 20px 60px #ebebe536,
-    -20px -20px 60px #90be6d7e;
     text-align: center;
-    color:black;
+    color: #C5283D;
     overflow: auto;
+    background-color: #ffc75765;
+}
+.app-item:hover{
+    background-color: #E9724C;
+    color:white;
+} 
+
+#rqbutton{
+    background-color: #E9724C;
+    color:white;
+    border: 1px solid black;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.5s ease;
+
 }
 
 #app-list {
-    border-radius: 50px;
-    background: #ebebe536;
-    padding: 1rem;
+    padding-bottom: 1rem;
 }
