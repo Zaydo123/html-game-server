@@ -49,3 +49,27 @@ a {
 #app-list {
     padding-bottom: 1rem;
 }
+
+.google > div img {
+    max-width: 80px;
+    min-width: 20px;
+}
+.google {
+    /*align items horitzontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:auto;
+    padding-top : 1rem;
+    padding-bottom: 1rem;
+    /*scale background to fit contents*/
+
+}
+
+.google > div{
+    transition: all 0.5s ease;
+}
+
+.google > div:hover,#rqbutton:hover{
+    transform: scale(1.05);
+}
