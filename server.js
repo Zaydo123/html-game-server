@@ -4,19 +4,55 @@ const app = express();
 const fs = require('fs');
 const path = require("path");
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
 
+dotenv.config();
 let ignoredRoutes = ['','visits','requestapp'];
-
-
 let port = process.env.PORT || 3000;
 
+//random string generator
+function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
+
+let admin_creds = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+console.log("Admin Credentials (if not specified in .env file): "+admin_creds);
+const ADMIN_COOKIE = process.env.ADMIN_COOKIE || admin_creds;
+
 //see which static files most popular and how many times they are requested
+
+//make json files if not exist on startup 
+
+//visits.json
+if(fs.existsSync('./public/visits.json')){
+    console.log("visits.json exists");
+}else{
+    console.log("visits.json does not exist, creating...");
+    fs.writeFileSync('./public/visits.json', '{"main":{"apps":[],"visitors":0}}');
+}
+//requestapps.json
+if(fs.existsSync('./requestapps.json')){
+    console.log("requestapps.json exists");
+}else{
+    console.log("requestapps.json does not exist, creating...");
+    fs.writeFileSync('./requestapps.json', '{"requests":[]}');
+}
+//ips.json
+if(fs.existsSync('./ips.json')){
+    console.log("ips.json exists");
+}else{
+    console.log("ips.json does not exist, creating...");
+    fs.writeFileSync('./ips.json', '{"ips":[]}');
+}
 
 app.use(function (req, res, next) {
     let filename = path.basename(req.url);
     let extension = path.extname(filename);
     if (extension === ''&& ignoredRoutes.indexOf(filename) == -1) {
-        console.log('Request for ' + filename + ' received');
+        //console.log('Request for ' + filename + ' received');
         //open visits.json file and update main.apps
         fs.readFile('public/visits.json', 'utf8', function readFileCallback(err, data){
             if (err){
@@ -49,7 +85,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(express.static('public'));
-
+app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
@@ -116,12 +152,74 @@ app.get('/visits',(req,res)=>{
             });
         }
     });
+    fs.readFile(__dirname + '/ips.json', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            let file2 = JSON.parse(data);
+            let ip = new Object();
+            ip.ip = req.ip;
+            ip.visits = 1;
+            ip.geo=null;
+            //see if ip is in file2.ips
+            let found = false;
+            for(let i = 0; i < file2.ips.length; i++){
+                if(file2.ips[i].ip == ip.ip){
+                    file2.ips[i].visits++;
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                file2.ips.push(ip);
+            }
+            fs.writeFile(__dirname + '/ips.json', JSON.stringify(file2), (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //
+                }
+            });
+        }
+    });
     res.sendFile(__dirname + '/public/visits.json');
 });
 
 app.get('/requestapp',(req,res)=>{
     res.render('requestapp.ejs');
 });
+
+app.get('/admin',(req,res)=>{
+    //open requestapps.json
+    if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
+        res.render('admin.ejs',{'authorized':false});
+    }
+    if(req.cookies.admin == ADMIN_COOKIE){
+        fs.readFile(__dirname + '/requestapps.json', (err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                let file = JSON.parse(data);
+                
+                fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        let apps = JSON.parse(data);
+                        fs.readFile(__dirname + '/ips.json', (err, ipfile) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                let ipdata = JSON.parse(ipfile);
+                                res.render('admin.ejs',{'authorized':true,'apps':apps.main.apps,'suggestions':file.requests,'ips':ipdata.ips});
+                            }
+                        });
+                    }
+                });
+            }   
+        });
+    }
+ });
 
 
 
@@ -150,7 +248,6 @@ app.post('/requestapp',(req,res)=>{
 
 });
 
-
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
-} );
+});
