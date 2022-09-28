@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Admin Analytics</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../admin.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <%if(authorized){%>
+        <div class="suggestions">
+            <h1>Suggestions</h1>
+
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Suggestion</th>
+                </tr>
+                <%for(let i=0;i<suggestions.length;i++){%>
+                <tr>
+                    <td><p><%=suggestions[i]['name']%></p></td>
+                    <td><p><%=suggestions[i]['App Name']%></p></td>
+                <%}%>
+                </tr>
+              </table>
+
+        </div>
+        
+        
+        
+        <div class="visits">
+            <h1>Visits</h1>
+            <table>
+                <tr>
+                    <th>Page/File</th>
+                    <th>Visits</th>
+                </tr>
+                <%for(let i=0;i<apps.length;i++){%>
+                    <tr>
+                        <td><p><%=apps[i]['route_name']%></p></td>
+                        <td><p><%=apps[i]['visits']%></p></td>
+                    </tr>
+                    <%}%>
+                </table>
+        </div>
+
+
+        <div class="ips">
+            <h1>IPs</h1>
+            <table>
+                <tr>
+                    <th>IP</th>
+                    <th>Visits</th>
+                    <th>Geolocation</th>
+                </tr>
+                <%for(let i=0;i<ips.length;i++){%>
+                    <tr>
+                        <td><p><%=ips[i]['ip']%></p></td>
+                        <td><p><%=ips[i]['visits']%></p></td>
+                        <td><p><%=ips[i]['geo']%></p></td>
+                    </tr>
+                <%}%>
+                </table>
+        </div>
+                
+                
+                
+                <%} else{%>
+                    <h1>Not Authorized</h1>
+            <input id="cookieName" placeholder="Name">
+            <input type="password" id="password" placeholder="Password">
+            <button id="submit">Submit</button>
+            <script>
+                //set cookie to password
+                document.getElementById("submit").addEventListener("click", function(){
+                    document.cookie = document.getElementById('cookieName').value+"=" + document.getElementById("password").value;
+                    location.reload();
+                });
+            </script>
+        <%}%>
+    </body>
+</html>

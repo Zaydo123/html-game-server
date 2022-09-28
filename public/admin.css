@@ -1,0 +1,42 @@
+body{
+    background-color: #ff8a66;
+}
+
+.suggestions,.visits,.ips{
+    background-color: #ff8a66;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.suggestion>p,.visits>p,.ips>p{
+    padding: 1rem;
+}
+
+table {
+	border-collapse:collapse;
+    width:50%;
+    color:#fefefe;
+    border-style: none;
+}
+
+th {
+    background-color: #895241;
+    font-size: 1.5rem;
+    color: #fefefe;
+    text-align: center;
+    border: 1px solid black;
+}
+
+td {
+	border-collapse:collapse;
+	border: 1px solid black;
+    text-align: center;
+	padding-top:0;
+	padding-bottom:0;
+    
+}
+
