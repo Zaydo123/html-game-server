@@ -3,4 +3,5 @@
 .env
 requestapps.json
 ips.json
-/public/visits.json
+visits.json
+public/visits.json
