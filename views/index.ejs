@@ -41,7 +41,7 @@
         <div id="app-list">
             <h1 hidden="true">Hi bozo</h1>
             <% for(let i=0;i<appList.apps.length ;i++){ %>
-                <div class="app-item" onclick="location.href='/app/<%=appList.apps[i].id%>'">
+                <div id="<%=appList.apps[i].id%>" class="app-item" onclick="location.href='/app/<%=appList.apps[i].id%>'">
                     <h3><%=appList.apps[i].name%></h3>
                 </div>
             <%} %>
