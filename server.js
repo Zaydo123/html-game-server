@@ -196,6 +196,68 @@ app.get('/requestapp',(req,res)=>{
     res.render('requestapp.ejs');
 });
 
+
+//accept post request
+app.post('/requestapp',(req,res)=>{
+    //log data from form request
+    //append data to requestapps.json file
+    fs.readFile(__dirname + '/requestapps.json', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            let file = JSON.parse(data);
+            req.body.id = Date.now();
+            file.requests.push(req.body);
+            fs.writeFile(__dirname + '/requestapps.json', JSON.stringify(file), (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //
+                }
+            });
+        }
+    });
+    //send response
+    res.redirect('/');
+
+});
+
+
+
+
+//admin page
+//every hour read visits.json and write to visits.csv
+setInterval(()=>{
+    fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('reading visits.json');
+            let file = JSON.parse(data);
+            let csv = file.main.visitors + ',' + new Date().toLocaleString() + '\n';
+            fs.appendFile(__dirname + '/public/visits.csv',csv,(err)=>{
+                if(err){
+                    console.log(err);
+                }
+            });
+        }
+    });
+},3600000);
+
+
+//every 24 hours delete contents of visits.csv and write header
+setInterval(()=>{
+    console.log('deleting visits.csv contents');
+    fs.writeFile(__dirname + '/public/visits.csv','visitors,date,time\n',(err)=>{
+        if(err){
+            console.log(err);
+        }
+    });
+},86400000);
+
+
+
+
 app.get('/admin',(req,res)=>{
     //open requestapps.json
     if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
@@ -228,61 +290,39 @@ app.get('/admin',(req,res)=>{
     }
  });
 
-
-
-//accept post request
-app.post('/requestapp',(req,res)=>{
-    //log data from form request
-    console.log(req.body);
-    //append data to requestapps.json file
-    fs.readFile(__dirname + '/requestapps.json', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            let file = JSON.parse(data);
-            file.requests.push(req.body);
-            fs.writeFile(__dirname + '/requestapps.json', JSON.stringify(file), (err) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    //
+app.post('/admin/removesuggestion/:id',(req,res)=>{
+    if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
+        res.send('not authorized');
+    } else{
+        //find item by id and remove it
+        fs.readFile(__dirname + '/requestapps.json', (err, data) => {
+            if (err) {
+                console.log(err);
+                res.send('error');
+            } else {
+                let file = JSON.parse(data);
+                for(let i = 0; i < file.requests.length; i++){
+                    if(file.requests[i].id == req.params.id){
+                        file.requests.splice(i,1);
+                        break;
+                    }
                 }
-            });
-        }
-    });
-    //send response
-    res.redirect('/');
-
+                fs.writeFile(__dirname + '/requestapps.json', JSON.stringify(file), (err) => {
+                    if (err) {
+                        console.log(err);
+                        res.send('error');
+                    } else {
+                        res.send('success');
+                    }
+                });
+            }
+        });
+    }
 });
 
-//every hour read visits.json and write to visits.csv
-setInterval(()=>{
-    fs.readFile(__dirname + '/public/visits.json', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('reading visits.json');
-            let file = JSON.parse(data);
-            let csv = file.main.visitors + ',' + new Date().toLocaleString() + '\n';
-            fs.appendFile(__dirname + '/public/visits.csv',csv,(err)=>{
-                if(err){
-                    console.log(err);
-                }
-            });
-        }
-    });
-},3600000);
 
 
-//every 24 hours delete contents of visits.csv and write header
-setInterval(()=>{
-    console.log('deleting visits.csv contents');
-    fs.writeFile(__dirname + '/public/visits.csv','visitors,date,time\n',(err)=>{
-        if(err){
-            console.log(err);
-        }
-    });
-},86400000);
+
 
 
 app.listen(port, () => {
