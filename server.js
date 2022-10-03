@@ -47,6 +47,13 @@ if(fs.existsSync('./ips.json')){
     console.log("ips.json does not exist, creating...");
     fs.writeFileSync('./ips.json', '{"ips":[]}');
 }
+//./public/visits.csv
+if(fs.existsSync('./public/visits.csv')){
+    console.log("visits.csv exists");
+}else{
+    console.log("visits.csv does not exist, creating...");
+    fs.writeFileSync('./public/visits.csv', 'visitors,date,time\n');
+}
 
 app.use(function (req, res, next) {
     let filename = path.basename(req.url);
@@ -247,6 +254,36 @@ app.post('/requestapp',(req,res)=>{
     res.redirect('/');
 
 });
+
+//every hour read visits.json and write to visits.csv
+setInterval(()=>{
+    fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('reading visits.json');
+            let file = JSON.parse(data);
+            let csv = file.main.visitors + ',' + new Date().toLocaleString() + '\n';
+            fs.appendFile(__dirname + '/public/visits.csv',csv,(err)=>{
+                if(err){
+                    console.log(err);
+                }
+            });
+        }
+    });
+},3600000);
+
+
+//every 24 hours delete contents of visits.csv and write header
+setInterval(()=>{
+    console.log('deleting visits.csv contents');
+    fs.writeFile(__dirname + '/public/visits.csv','visitors,date,time\n',(err)=>{
+        if(err){
+            console.log(err);
+        }
+    });
+},86400000);
+
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
