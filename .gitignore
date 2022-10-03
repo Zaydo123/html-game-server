@@ -1,8 +1,8 @@
 /.DS_Store
 **/.DS_Store
 .env
-requestapps.json
 ips.json
 visits.json
 public/visits.json
 public/visits.csv
+requestapps.json
