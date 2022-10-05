@@ -11,7 +11,7 @@ function visitorsGraph(){
             //pop first item from list
             //data to dictionary
             let lines = data.split('\n');
-            let graphData = [];
+
             let times = [];
             let visits = [];
             console.log(times);
@@ -25,6 +25,9 @@ function visitorsGraph(){
                     }
                 }
             }
+
+
+            console.log(visits);
             const ctx = document.getElementById('visitorsChart').getContext('2d');
             const myChart = new Chart(ctx, {
                 type: 'bar',
