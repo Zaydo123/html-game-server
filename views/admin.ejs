@@ -25,12 +25,14 @@
             <table>
                 <tr>
                     <th>X</th>
+                    <th>Email</th>
                     <th>Name</th>
                     <th>Suggestion</th>
                 </tr>
                 <%for(let i=0;i<suggestions.length;i++){%>
                 <tr id="<%=suggestions[i]['id']%>">
                     <td><button onclick="removeSuggestion(<%=suggestions[i]['id']%>);">X</button></td>
+                    <td><%=suggestions[i]['email']%></td>
                     <td><p><%=suggestions[i]['name']%></p></td>
                     <td><p><%=suggestions[i]['App Name']%></p></td>
                 <%}%>
