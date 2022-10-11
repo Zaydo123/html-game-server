@@ -186,12 +186,13 @@ app.get('/rpitemps', function (req, res) {
     if(process.env.PI === 'True'){
         let cpuTemp = fs.readFileSync("/sys/class/thermal/thermal_zone0/temp");
         let cpuTempC = cpuTemp/1000;
-
+        res.send({'cpu':cpuTempC});  
     } else {
         let cpuTempC = 0;
+        res.send({'cpu':cpuTempC});  
     }
     
-    res.send({'cpu':cpuTempC});  
+    
 }
 );
 
