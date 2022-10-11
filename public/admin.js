@@ -85,5 +85,23 @@ function removeSuggestion(id){
     }
 }
 
+function removeVisits(id){
+    const Http = new XMLHttpRequest();
+    console.log('id:'+id);
+    const url='/admin/removevisits/'+id;
+    Http.open("POST", url);
+    Http.send();
+    Http.onreadystatechange = (e) => {
+        if(Http.readyState==4&&Http.status==200){
+            console.log('rq done');
+            let data = Http.responseText;
+            console.log(data);
+            if(data=='success'){
+                document.getElementById(id).remove();
+            }
+        }
+    }
+}
+
 
 visitorsGraph();

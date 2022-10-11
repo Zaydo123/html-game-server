@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 
 dotenv.config();
-let ignoredRoutes = ['','visits','requestapp'];
+let ignoredRoutes = ['','visits','requestapp','admin'];
 let port = process.env.PORT || 3000;
 
 //random string generator
@@ -28,28 +28,24 @@ const ADMIN_COOKIE = process.env.ADMIN_COOKIE || admin_creds;
 
 //visits.json
 if(fs.existsSync('./public/visits.json')){
-    console.log("visits.json exists");
 }else{
     console.log("visits.json does not exist, creating...");
     fs.writeFileSync('./public/visits.json', '{"main":{"apps":[],"visitors":0}}');
 }
 //requestapps.json
 if(fs.existsSync('./requestapps.json')){
-    console.log("requestapps.json exists");
 }else{
     console.log("requestapps.json does not exist, creating...");
     fs.writeFileSync('./requestapps.json', '{"requests":[]}');
 }
 //ips.json
 if(fs.existsSync('./ips.json')){
-    console.log("ips.json exists");
 }else{
     console.log("ips.json does not exist, creating...");
     fs.writeFileSync('./ips.json', '{"ips":[]}');
 }
 //./public/visits.csv
 if(fs.existsSync('./public/visits.csv')){
-    console.log("visits.csv exists");
 }else{
     console.log("visits.csv does not exist, creating...");
     fs.writeFileSync('./public/visits.csv', 'visitors,date,time\n');
@@ -272,7 +268,7 @@ app.get('/admin',(req,res)=>{
                 
                 fs.readFile(__dirname + '/public/visits.json', (err, data) => {
                     if (err) {
-                        console.log(err);
+                        console.loyg(err);
                     } else {
                         let apps = JSON.parse(data);
                         fs.readFile(__dirname + '/ips.json', (err, ipfile) => {
@@ -320,10 +316,37 @@ app.post('/admin/removesuggestion/:id',(req,res)=>{
     }
 });
 
-
-
-
-
+app.post('/admin/removevisits/:id',(req,res)=>{
+    if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
+        res.send('not authorized');
+    } else{
+        console.log('got rq '+req.params.id);
+        //open /public/visits.json and delete main.apps entry
+        //find item by roue_name and remove it
+        fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+            if (err) {
+                console.log(err);
+                res.send('error');
+            } else {
+                let file = JSON.parse(data);
+                for(let i = 0; i < file.main.apps.length; i++){
+                    if(file.main.apps[i].route_name == req.params.id){
+                        file.main.apps[i].visits = 0;
+                        break;
+                    }
+                }
+                fs.writeFile(__dirname + '/public/visits.json', JSON.stringify(file), (err) => {
+                    if (err) {
+                        console.log(err);
+                        res.send('error');
+                    } else {
+                        res.send('success');
+                    }
+                });
+            }
+        });
+    }
+});
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);

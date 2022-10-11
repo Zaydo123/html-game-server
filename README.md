@@ -22,4 +22,4 @@ The index.ejs file in the /views directory is editable to customize the website 
 ## Pages / Functions
 1. Home Page --> Title, Visits Counter, Games Library (pics optional), request a game button, bug report button
 2. Redesign css of https://physics-central.com/requestapp slightly
-3. Admin page : (ill dm u screenshots and login)
+3. Admin page : (ill dm u screenshots and login
