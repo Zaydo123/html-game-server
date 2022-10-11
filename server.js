@@ -188,7 +188,7 @@ app.get('/rpitemps', function (req, res) {
         let cpuTempC = cpuTemp/1000;
 
     } else {
-        cpuTempC = 0;
+        let cpuTempC = 0;
     }
     
     res.send({'cpu':cpuTempC});  
