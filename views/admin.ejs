@@ -68,29 +68,9 @@
                 <%}%>
                 </table>
         </div>
-
-
-        <div class="ips">
-            <h1>IPs</h1>
-            <table>
-                <tr>
-                    <th>IP</th>
-                    <th>Visits</th>
-                    <th>Geolocation</th>
-                </tr>
-                <%for(let i=0;i<ips.length;i++){%>
-                    <tr>
-                        <td><p><%=ips[i]['ip']%></p></td>
-                        <td><p><%=ips[i]['visits']%></p></td>
-                        <td><p><%=ips[i]['geo']%></p></td>
-                    </tr>
-                <%}%>
-                </table>
-        </div>
                 
-                
-                <%} else{%>
-                    <h1>Not Authorized</h1>
+    <%} else{%>
+            <h1>Not Authorized</h1>
             <input id="cookieName" placeholder="Name">
             <input type="password" id="password" placeholder="Password">
             <button id="submit">Submit</button>

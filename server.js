@@ -38,12 +38,6 @@ if(fs.existsSync('./requestapps.json')){
     console.log("requestapps.json does not exist, creating...");
     fs.writeFileSync('./requestapps.json', '{"requests":[]}');
 }
-//ips.json
-if(fs.existsSync('./ips.json')){
-}else{
-    console.log("ips.json does not exist, creating...");
-    fs.writeFileSync('./ips.json', '{"ips":[]}');
-}
 //./public/visits.csv
 if(fs.existsSync('./public/visits.csv')){
 }else{
@@ -155,36 +149,6 @@ app.get('/visits',(req,res)=>{
             });
         }
     });
-    fs.readFile(__dirname + '/ips.json', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            let file2 = JSON.parse(data);
-            let ip = new Object();
-            ip.ip = req.ip;
-            ip.visits = 1;
-            ip.geo=null;
-            //see if ip is in file2.ips
-            let found = false;
-            for(let i = 0; i < file2.ips.length; i++){
-                if(file2.ips[i].ip == ip.ip){
-                    file2.ips[i].visits++;
-                    found = true;
-                    break;
-                }
-            }
-            if(!found){
-                file2.ips.push(ip);
-            }
-            fs.writeFile(__dirname + '/ips.json', JSON.stringify(file2), (err) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    //
-                }
-            });
-        }
-    });
     res.sendFile(__dirname + '/public/visits.json');
 });
 
@@ -218,7 +182,18 @@ app.post('/requestapp',(req,res)=>{
 
 });
 
+app.get('/rpitemps', function (req, res) {
+    if(process.env.PI === 'True'){
+        let cpuTemp = fs.readFileSync("/sys/class/thermal/thermal_zone0/temp");
+        let cpuTempC = cpuTemp/1000;
 
+    } else {
+        cpuTempC = 0;
+    }
+    
+    res.send({'cpu':cpuTempC});  
+}
+);
 
 
 //admin page
@@ -271,20 +246,13 @@ app.get('/admin',(req,res)=>{
                         console.loyg(err);
                     } else {
                         let apps = JSON.parse(data);
-                        fs.readFile(__dirname + '/ips.json', (err, ipfile) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                let ipdata = JSON.parse(ipfile);
-                                res.render('admin.ejs',{'authorized':true,'apps':apps.main.apps,'suggestions':file.requests,'ips':ipdata.ips});
-                            }
-                        });
+                        res.render('admin.ejs',{'authorized':true,'apps':apps.main.apps,'suggestions':file.requests});
                     }
                 });
-            }   
+            }
         });
     }
- });
+});
 
 app.post('/admin/removesuggestion/:id',(req,res)=>{
     if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
