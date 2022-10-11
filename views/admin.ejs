@@ -53,15 +53,19 @@
             <h1>Visits</h1>
             <table>
                 <tr>
+                    <th>X</th>
                     <th>Page/File</th>
                     <th>Visits</th>
                 </tr>
                 <%for(let i=0;i<apps.length;i++){%>
-                    <tr>
+                    <%if(apps[i]['visits']!=0){%>
+                    <tr id="<%=apps[i]['route_name']%>">
+                        <td><button onclick="removeVisits('<%=apps[i]["route_name"]%>');">X</button></td>
                         <td><p><%=apps[i]['route_name']%></p></td>
                         <td><p><%=apps[i]['visits']%></p></td>
                     </tr>
                     <%}%>
+                <%}%>
                 </table>
         </div>
 
