@@ -6,7 +6,6 @@ const path = require("path");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
-const keepAlive = require('./keepalive.js');
 const sharp = require('sharp');
 
 dotenv.config();
@@ -395,6 +394,7 @@ app.post('/admin/removevisits/:id',(req,res)=>{
         });
     }
 });
+const keepAlive = require('./keepalive.js');
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
