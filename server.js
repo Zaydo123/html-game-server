@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const keepAlive = require('./keepalive.js');
+const sharp = require('sharp');
 
 dotenv.config();
 let ignoredRoutes = ['','visits','requestapp','admin'];
@@ -88,6 +89,43 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 
+//look if appImage exists in public/app/appName/
+function appImageEdit(appName){
+    let appImage = false;
+    let dirs = fs.readdirSync('./public/app/'+appName);
+    //dont continue if resized image already exists
+    for(let i = 0; i < dirs.length; i++){
+        if(dirs[i].includes("resized")){
+            appImage = true;
+        }
+    }
+    dirs.forEach(file => {
+        if((file.indexOf('resized_appImage.')==-1)&&(file.indexOf('appImage.') != -1)&&(appImage == false)){
+            appImage = false;
+            console.log(file);
+            sharp('./public/app/'+appName+'/'+file)
+            .resize(600,600)
+            .toFile('./public/app/'+appName+'/'+'resized_'+file, (err, info) => {
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log('resizing '+file+' to '+info.width+'x'+info.height);
+                }
+            });
+
+        }
+    });
+    return appImage;
+}
+
+//open all directories in public/app
+fs.readdirSync('./public/app').forEach(file => {
+    if(file[0] != '.'){
+        appImageEdit(file);
+    }
+});
+
+
 
 //function that reads visits.json and returns the json object
 function getVisits(){
@@ -123,17 +161,17 @@ app.get('/', (req, res) => {
                 app_name = app_name.charAt(0).toUpperCase() + app_name.slice(1);
                 let appInfo = {'id':files[i],'name': app_name,'description':"",photos:[]};
                 //get photos and videos
-                //see if folder has appImage.jpg or appImage.png
-                if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.jpg')){
-                    appInfo.photos.push('/app/'+file+'/appImage.jpg');
-                }else if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.png')){
-                    appInfo.photos.push('/app/'+file+'/appImage.png');
-                }else if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.gif')){
-                    appInfo.photos.push('/app/'+file+'/appImage.gif');
-                } else if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.jpeg')){
-                    appInfo.photos.push('/app/'+file+'/appImage.jpeg');
-                } else if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.webp')){
-                    appInfo.photos.push('/app/'+file+'/appImage.webp');
+                //see if folder has resized_appImage.jpg or resized_appImage.png
+                if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.jpg')){
+                    appInfo.photos.push('/app/'+file+'/resized_appImage.jpg');
+                }else if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.png')){
+                    appInfo.photos.push('/app/'+file+'/resized_appImage.png');
+                }else if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.gif')){
+                    appInfo.photos.push('/app/'+file+'/resized_appImage.gif');
+                } else if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.jpeg')){
+                    appInfo.photos.push('/app/'+file+'/resized_appImage.jpeg');
+                } else if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.webp')){
+                    appInfo.photos.push('/app/'+file+'/resized_appImage.webp');
                 }
 
                 //if description.txt exists, add it to appInfo
@@ -173,6 +211,7 @@ app.get('/', (req, res) => {
                                     }
                                     return bVisits - aVisits;
                                 });
+                                console.log(apps);
                                 res.render('index.ejs',{'appList':apps,visits:visits.main.visitors});
                             });
                         }
