@@ -6,6 +6,7 @@ const path = require("path");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const keepAlive = require('./keepalive.js');
 
 dotenv.config();
 let ignoredRoutes = ['','visits','requestapp','admin'];
@@ -263,6 +264,8 @@ setInterval(()=>{
         }
     });
 },86400000);
+
+
 
 
 
