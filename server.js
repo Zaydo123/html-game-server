@@ -188,7 +188,9 @@ app.get('/visits',(req,res)=>{
 });
 
 app.get('/requestapp',(req,res)=>{
-    res.render('requestapp.ejs');
+    getVisits().then((visits)=>{
+        res.render('requestapp.ejs',{visits:visits.main.visitors});
+    });
 });
 
 

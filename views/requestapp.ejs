@@ -1,34 +1,147 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>HW <%=new Date().toISOString().slice(0, 10)%></title>
-        <link rel="icon" type="image/x-icon" href="doc.ico">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="requestapp.css">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <h1>Request A Game or App</h1>
-        <form action="/requestapp" method="post">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name">
-            <label for="email">Email:</label>
-            <input type="text" name="email" id="email">
-            <label for="app_name">App Name:</label>
-            <input type="text" name="App Name" id="app_name">
-            <input type="submit" value="Submit">
-        </form>
-        <button onclick="location.href = '/';" id="rqbutton">Return to Homepage</button>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HW <%=new Date().toISOString().slice(0, 10)%></title>
+    <link rel="icon" type="image/x-icon" href="doc.ico">
+    <link href="css/bootstrap-4.4.1.css" rel="stylesheet" />
+    <link href="css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Physics Central</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#"
+                >Home <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/requestapp">Game Requests&nbsp;&nbsp;</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/Zaydo123/html-game-server/issues/new/choose">Bug Reports&nbsp; &nbsp;</a>
+            </li>
+          </ul>
+        </div>
+        <div class="total-visits">
+          <a class="nav" style="color: white; font-size: large">Total Visits: <%=visits%></a>
+        </div>
+      </div>
+    </nav>
 
-        </body>
-    <!--Return to homepage button-->
-</html> 
+    <!-- create a large game request form card, that collects game name, email address, and name-->
+    <div class="container" style="padding-bottom: 50px; padding-top: 50px">
+      <div class="card">
+        <div class="card-header">
+          <h1>Game Request Form</h1>
+        </div>
+        <div class="card-body">
+          <form action="/requestapp" method="post">
+            <div class="form-group">
+              <label for="gameName">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                placeholder="Enter Name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="emailAddress">Email Address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter Email Address"
+              />
+            </div>
+            <div class="form-group">
+              <label for="name">Game Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="app_name"
+                name="App Name"
+                placeholder="Enter Game Name"
+              />
+            </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-md" style="padding-bottom: 300px">
+      <div class="row">
+        <div class="col-md-12" style="padding-bottom: 0px">
+          <div class="card">
+            <div class="card-header">
+              <h3>Disclaimer</h3>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                We will try our best to accommodate your request where possible.
+                However, we cannot guarantee that your request will be
+                fulfilled. Please understand that there are limitations for what
+                we can put on a website. For example we cannot fuffill a request
+                for GTA V.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer align="center" style="padding-top: 15px">
+      <div class="modal-footer" style="background-color: #343a40">
+        <div class="row" style="color: aliceblue">
+          <div class="col-md-4">
+            <h5>Thank You For The Support!</h5>
+            <p>
+              We really appreciate the support we get from our users. We are
+              always looking for ways to improve our site and make it better for
+              you.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>Here! Steal our site!</h5>
+            <p>
+              Click this link to download the source code for this site. You can
+              use it to make your own site, or just to learn from. We don't
+              care. Just don't steal our name.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>Current Projects</h5>
+            <li>game 1 - description</li>
+            <li>game 2 - description</li>
+            <li>game 3 - description</li>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- BootstrapJS -->
+    <script src="Plugin/jquery-3.4.1.min.js"></script>
+    <script src="Plugin/popper.min.js"></script>
+    <script src="Plugin/bootstrap-4.4.1.js"></script>
+  </body>
+</html>
