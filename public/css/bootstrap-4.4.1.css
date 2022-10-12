@@ -543,6 +543,9 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+.container {
+}
+
 
 @media (min-width: 576px) {
   .container {
@@ -10218,4 +10221,14 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6;
   }
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+	text-align: center;}	
+	
+	
 }
