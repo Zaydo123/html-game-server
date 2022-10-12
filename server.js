@@ -101,7 +101,6 @@ function appImageEdit(appName){
     dirs.forEach(file => {
         if((file.indexOf('resized_appImage.')==-1)&&(file.indexOf('appImage.') != -1)&&(appImage == false)){
             appImage = false;
-            console.log(file);
             sharp('./public/app/'+appName+'/'+file)
             .resize(600,600)
             .toFile('./public/app/'+appName+'/'+'resized_'+file, (err, info) => {
@@ -210,7 +209,6 @@ app.get('/', (req, res) => {
                                     }
                                     return bVisits - aVisits;
                                 });
-                                console.log(apps);
                                 res.render('index.ejs',{'appList':apps,visits:visits.main.visitors});
                             });
                         }
