@@ -66,7 +66,7 @@ app.use(function (req, res, next) {
                     }
                 }
                 if(!found){
-                    obj.main.apps.push({route_name:filename,visits:1});
+                    obj.main.apps.push({route_name:filename,description:"",image:"",visits:1});
                 }
 
                 json = JSON.stringify(obj); //convert it back to json
@@ -85,6 +85,23 @@ app.use(express.static('public'));
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'ejs');
+
+
+
+//function that reads visits.json and returns the json object
+function getVisits(){
+    return new Promise((resolve,reject)=>{
+        fs.readFile('public/visits.json', 'utf8', function readFileCallback(err, data){
+            if (err){
+                console.log(err);
+            } else {
+                resolve(JSON.parse(data));
+            }
+        });
+    }
+    );  
+}
+
 app.get('/', (req, res) => {
     //res.sendFile(__dirname + '/index.html');
     fs.readdir(__dirname + '/public/app', (err, files) => {
@@ -103,52 +120,70 @@ app.get('/', (req, res) => {
                 }
                 //capitalize first letter of each word
                 app_name = app_name.charAt(0).toUpperCase() + app_name.slice(1);
-                let appInfo = {'id':files[i],'name': app_name,photos:[],videos:[]};
+                let appInfo = {'id':files[i],'name': app_name,'description':"",photos:[]};
+                //get photos and videos
+                //see if folder has appImage.jpg or appImage.png
+                if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.jpg')){
+                    appInfo.photos.push('/app/'+file+'/appImage.jpg');
+                }else if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.png')){
+                    appInfo.photos.push('/app/'+file+'/appImage.png');
+                }else if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.gif')){
+                    appInfo.photos.push('/app/'+file+'/appImage.gif');
+                } else if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.jpeg')){
+                    appInfo.photos.push('/app/'+file+'/appImage.jpeg');
+                } else if(fs.existsSync(__dirname + '/public/app/'+file+'/appImage.webp')){
+                    appInfo.photos.push('/app/'+file+'/appImage.webp');
+                }
+
+                //if description.txt exists, add it to appInfo
+                if(fs.existsSync(__dirname + '/public/app/'+file+'/description.txt')){
+                    appInfo.description = fs.readFileSync(__dirname + '/public/app/'+file+'/description.txt', 'utf8');
+                }
                 //append app info to apps.apps
                 if(files[i] != '.DS_Store'){
                     apps.apps.push(appInfo);
                 }   
             }
+            //read visits then send to index.ejs
 
-            res.render('index.ejs',{'appList':apps});
-
+            //add 1 to visits
+            fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    let file = JSON.parse(data);
+                    file.main.visitors++
+                    fs.writeFile(__dirname + '/public/visits.json', JSON.stringify(file), (err) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            getVisits().then((visits)=>{
+                                //sort apps by visits
+                                apps.apps.sort((a,b)=>{
+                                    let aVisits = 0;
+                                    let bVisits = 0;
+                                    for(let i = 0; i < visits.main.apps.length; i++){
+                                        if(visits.main.apps[i].route_name == a.id.split('.')[0]){
+                                            aVisits = visits.main.apps[i].visits;
+                                        }
+                                        if(visits.main.apps[i].route_name == b.id.split('.')[0]){
+                                            bVisits = visits.main.apps[i].visits;
+                                        }
+                                    }
+                                    return bVisits - aVisits;
+                                });
+                                res.render('index.ejs',{'appList':apps,visits:visits.main.visitors});
+                            });
+                        }
+                    });
+                }
+            });
         }
     });
 
 });
 
-//gets visitor count but want to add reports count
-
-function getVisits(){
-    return new Promise((resolve,reject)=>{
-        $.ajax({
-            url:'/visits',
-            type:'GET',
-            success:function(data){
-                resolve(data);
-                document.getElementById('visitorsCounter').innerHTML = "Total Visits : "+data.main.visitors;
-            }
-        });
-    }
-    );
-}
-
 app.get('/visits',(req,res)=>{
-    fs.readFile(__dirname + '/public/visits.json', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            let file = JSON.parse(data);
-            file.main.visitors++
-            fs.writeFile(__dirname + '/public/visits.json', JSON.stringify(file), (err) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    //
-                }
-            });
-        }
-    });
     res.sendFile(__dirname + '/public/visits.json');
 });
 

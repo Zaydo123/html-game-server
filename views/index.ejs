@@ -1,54 +1,219 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>HW <%=new Date().toISOString().slice(0, 10)%></title>
-        <link rel="icon" type="image/x-icon" href="doc.ico">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="index.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="load_content.js"></script>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361"
-     crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <div class="header">
-            <h1>Physics Central</h1>
-            <h3 id="visitorsCounter">Total Visits: </h3>
-            <button onclick="location.href = '/requestapp';" id="rqbutton">Request Game</button>
-            <div class="google">
-                
-                <div class="docs">
-                    <a href="https://www.docs.new/" target="_blank"><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_Docs.max-1100x1100.png"></a>
-                </div>
-                <div class="sheets">
-                    <a href="https://www.sheets.new/" target="_blank"><img src="https://lh3.ggpht.com/e3oZddUHSC6EcnxC80rl_6HbY94sM63dn6KrEXJ-C4GIUN-t1XM0uYA_WUwyhbIHmVMH=w300"></a>
-                </div>
-                <div class="slides">
-                    <a href="https://www.slides.new/" target="_blank"><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_Slides.max-1100x1100.png"></a>
-                </div>
-                <div class="forms">
-                    <a href="https://www.forms.new/" target="_blank"><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_Forms.max-1100x1100.png"></a>
-                </div>
-            </div> 
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HW <%=new Date().toISOString().slice(0, 10)%></title>
+    <link rel="icon" type="image/x-icon" href="doc.ico" />
+    <link href="css/bootstrap-4.4.1.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Physics Central</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#"
+                >Home <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/requestapp">Game Requests&nbsp;&nbsp;</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/Zaydo123/html-game-server/issues/new/choose" target="_blank">Bug Reports&nbsp; &nbsp;</a>
+            </li>
+          </ul>
         </div>
-        <div id="app-list">
-            <h1 hidden="true">Hi bozo</h1>
-            <% for(let i=0;i<appList.apps.length ;i++){ %>
-                <div id="<%=appList.apps[i].id%>" class="app-item" onclick="location.href='/app/<%=appList.apps[i].id%>'">
-                    <h3><%=appList.apps[i].name%></h3>
+        <div class="total-visits">
+          <a class="nav" style="color: white; font-size: large">Total Visits: <%=visits%></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-3">
+      <div class="row">
+        <div class="col-12">
+          <div
+            id="carouselExampleControls"
+            class="carousel slide"
+            data-ride="carousel"
+          >
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li
+                data-target="#carouselExampleControls"
+                data-slide-to="0"
+                class="active"
+              ></li>
+              <li data-target="#carouselExampleControls" data-slide-to="1"></li>
+              <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img
+                  class="d-block w-100"
+                  src="data:image/jpeg;base64,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"
+                  alt="First slide"
+                />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Welcome</h5>
+                  <p>Have fun. Play games.</p>
                 </div>
+              </div>
+              <div class="carousel-item">
+                <img
+                  class="d-block w-100"
+                  src="data:image/jpeg;base64,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"
+                  alt="Second slide"
+                />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Having issues?</h5>
+                  <p>Let us know in the bug reports tab.</p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img
+                  class="d-block w-100"
+                  src="data:image/jpeg;base64,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"
+                  alt="Third slide"
+                />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Want something we don't have?</h5>
+                  <p>
+                    Use the game requests tab to tell us what you want and we'll
+                    try to make it happen. :)
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Left and right controls -->
+
+            <a
+              class="carousel-control-prev"
+              href="#carouselExampleControls"
+              role="button"
+              data-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a
+              class="carousel-control-next"
+              href="#carouselExampleControls"
+              role="button"
+              data-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+    </div>
+    <hr />
+    <h2 class="text-center">Games</h2>
+    <hr />
+    <div class="container">
+        <%let r=0;%>
+        <% for(let i=0;i<appList.apps.length ;i++){ %>
+            <% if(i%3==0&&i!=0){%>
+               <%r++;%>
+                <div class="row text-center mt-4">
+            <% }else{if(i==0){%><div class="row text-center"><%}} %>
+            <% if((appList.apps.length-1==i)&&(i%3!=0)){ %>
+              <div class="col-md-4 pb-1 pb-md-0">
+                <div class="card">
+
+                  <div class="card-body">
+                    <h5 class="card-title">You've Reached The End</h5>
+                    <p class="card-text">Wanna Jump?</p>
+                    <a href="#navbarSupportedContent" class="btn btn-primary">Go!&nbsp;</a>
+                  </div>
+                </div>
+              </div>
             <%} %>
+            <div class="col-md-4 pb-1 pb-md-0">
+              <div class="card">
+                <img
+                  class="card-img-top"
+                  <%if(appList.apps[i].photos[0]){%>
+                    src=<%=appList.apps[i].photos[0]%>
+                  <%}else{%>
+                    src="images/400x200.gif"
+                  <%}%>
+                  alt="Card image cap"
+                />
+                <div class="card-body">
+                  <h5 class="card-title"><%=appList.apps[i].name%></h5>
+                  <p class="card-text"><%=appList.apps[i].description%></p>
+                  <a href="/app/<%=appList.apps[i].id%>" class="btn btn-primary">Play Game&nbsp;</a>
+                </div>
+              </div>
+            </div>
+            <% if(i%3==2){%>
+                </div>
+            <%}%>
+
+        <%} %>
+      </div>
+    <hr />
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Thank You For The Support!</h5>
+            <p>
+              We really appreciate the support we get from our users. We are
+              always looking for ways to improve our site and make it better for
+              you.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>Here! Steal our site!</h5>
+            <p onclick=window.location.href="https://github.com/Zaydo123/html-game-server">
+              Click this link to download the source code for this site. You can
+              use it to make your own site, or just to learn from. We don't
+              care. Just don't steal our name.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>Current Projects</h5>
+            <li>Site Unblocker - Ooooooo</li>
+            <li>Flappy Bird - Request by Hadi</li>
+            <li>Minecraft - Multiplayer Possible</li>
+          </div>
         </div>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <a href="https://github.com/Zaydo123/html-game-server">This is an open source project. If you'd like to contribute or download, please click me.</a>
-    </body>
+      </div>
+    </footer>
+    <!-- BootstrapJS -->
+    <script src="/Plugin/jquery-3.4.1.min.js"></script>
+    <script src="/Plugin/popper.min.js"></script>
+    <script src="/Plugin/bootstrap-4.4.1.js"></script>
+  </body>
 </html>
