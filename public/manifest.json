@@ -1,0 +1,15 @@
+{
+  "background_color": "purple",
+  "description": "Google App",
+  "icons": [
+    {
+      "src": "/doc.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "name": "Google Docs",
+  "short_name": "Docs",
+  "start_url": "/",
+  "display": "standalone"
+}
