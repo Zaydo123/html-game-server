@@ -10,6 +10,7 @@ setInterval(()=>{
             try{
                 json = JSON.parse(data);
                 savedData = json;
+                process.stdout.write("[KEEPALIVE] Heartbeat \r");
             } catch(e){
                 console.log('health check [ERROR]');
                 fs.writeFile(__dirname + '/public/visits.json',JSON.stringify(savedData),(err)=>{

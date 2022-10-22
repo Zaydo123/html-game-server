@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HW <%=new Date().toISOString().slice(0, 10)%></title>
+    <link rel="icon" type="image/x-icon" href="/doc.ico" />
+    <link href="/css/bootstrap-4.4.1.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" />
+    <link rel="manifest" href="/manifest.json" />
+    <script src="/fullScreen.js"></script>
+  </head>
+  <body>
+    <!-- Install button, hidden by default -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/">Physics Central</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/"
+                >Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/requestapp">Game Requests&nbsp;&nbsp;</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/Zaydo123/html-game-server/issues/new/choose" target="_blank">Bug Reports&nbsp; &nbsp;</a>
+            </li>
+            <li class="nav-item">
+              <button class="add-button"><a class="nav-link">Install</a></button>
+            </li>
+          </ul>
+        </div>
+        <div class="total-visits">
+          <a class="nav" style="color: white; font-size: large">Total Visits: <%=visits%></a>
+        </div>
+      </div>
+    </nav>
+    <hr />
+
+    <!--<iframe id="app-iframe" height="800" width="1000" onclick="focusIframe()" src="https://venturexjewelry.com/app/<%=app%>"></iframe>-->
+    <iframe id="app-iframe" height="500" width="1000" src="https://algebra.zaydo123.repl.co/games/<%=app%>"></iframe>
+    <script>
+        //every 5 seconds check if the iframe is focused
+        let myIframe = document.getElementById('app-iframe');
+        myIframe.focus(); 
+        myIframe = myIframe.contentWindow
+        myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
+    </script>
+    <button id="fullscreenButton" onclick="openFullscreen('app-iframe')" style="margin: auto;" scrolling="no">Fullscreen</button>
+
+    <hr />
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Thank You For The Support!</h5>
+            <p>
+              We really appreciate the support we get from our users. We are
+              always looking for ways to improve our site and make it better for
+              you.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>Here! Steal our site!</h5>
+            <p onclick=window.location.href="https://github.com/Zaydo123/html-game-server">
+              Click this link to download the source code for this site. You can
+              use it to make your own site, or just to learn from. We don't
+              care. Just don't steal our name.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>Shoutout</h5>
+            <li>Hadi</li>
+            <li>Tayseer</li>
+            <li>Zane</li>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- BootstrapJS -->
+    <script src="/Plugin/jquery-3.4.1.min.js"></script>
+    <script src="/Plugin/popper.min.js"></script>
+    <script src="/Plugin/bootstrap-4.4.1.js"></script>
+  </body>
+</html>

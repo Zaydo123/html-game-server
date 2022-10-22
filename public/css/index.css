@@ -2,3 +2,12 @@
     background: none;
     border: none;
 }
+#app-iframe{
+    margin:auto;
+    display:block;
+    border: none;
+}
+#fullscreenButton{
+    margin: auto;
+    display: block;
+    }

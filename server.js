@@ -46,6 +46,34 @@ if(fs.existsSync('./public/visits.csv')){
     fs.writeFileSync('./public/visits.csv', 'visitors,date,time\n');
 }
 
+//middleware to parse user agent and block accordingly
+app.use(function(req, res, next) {
+    if(process.env.CHROMEBOOK_ONLY==undefined){
+        next();
+    }else{
+        if((req.get('user-agent').indexOf('CrOS')==-1)&&(process.env.CHROMEBOOK_ONLY == "True")){
+            if(process.env.ALLOWED_USER_AGENTS != undefined){
+                if((process.env.ALLOWED_USER_AGENTS.indexOf(req.get('user-agent')) == -1)){
+                    if(process.env.ALLOWED_USER_AGENTS.length==0){
+                        next();
+                    } else {
+                        console.log("User-Agent: "+req.get('user-agent')+" is not allowed to access this site.");
+                        res.send('chromebook only! email themanishereinch@gmail.com if you want to access this site from your device');
+                    }
+                } else {
+                next();
+                }
+            } else {
+                next();
+            }
+        } else {
+            next();
+        }
+    }
+});
+
+    
+//visitor counter middleware
 app.use(function (req, res, next) {
     let filename = path.basename(req.url);
     let extension = path.extname(filename);
@@ -56,26 +84,30 @@ app.use(function (req, res, next) {
             if (err){
                 console.log(err);
             } else {
-                obj = JSON.parse(data); //now it an object
+                try{
+                    obj = JSON.parse(data); //now it an object
+                    let found = false;
+                    for(let i = 0; i < obj.main.apps.length; i++){
+                        if(obj.main.apps[i].route_name == filename){
+                            obj.main.apps[i].visits++;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found){
+                        obj.main.apps.push({route_name:filename,description:"",image:"",visits:1});
+                    }
+    
+                    json = JSON.stringify(obj); //convert it back to json
+                    fs.writeFile('public/visits.json', json, 'utf8', (err)=>{
+                        if(err){
+                            console.log(err);
+                        }
+                    }); // write it back 
+                } catch{
+                    console.log('ERROR parsing in visits middleware');
+                }
                 //if cant find app in obj.main.apps[index].route_name then add it
-                let found = false;
-                for(let i = 0; i < obj.main.apps.length; i++){
-                    if(obj.main.apps[i].route_name == filename){
-                        obj.main.apps[i].visits++;
-                        found = true;
-                        break;
-                    }
-                }
-                if(!found){
-                    obj.main.apps.push({route_name:filename,description:"",image:"",visits:1});
-                }
-
-                json = JSON.stringify(obj); //convert it back to json
-                fs.writeFile('public/visits.json', json, 'utf8', (err)=>{
-                    if(err){
-                        console.log(err);
-                    }
-                }); // write it back 
             }
         });
             
@@ -88,10 +120,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 
-//look if appImage exists in public/app/appName/
+//look if appImage exists in public/games/appName/
 function appImageEdit(appName){
     let appImage = false;
-    let dirs = fs.readdirSync('./public/app/'+appName);
+    let dirs = fs.readdirSync('./public/games/'+appName);
     //dont continue if resized image already exists
     for(let i = 0; i < dirs.length; i++){
         if(dirs[i].includes("resized")){
@@ -101,9 +133,9 @@ function appImageEdit(appName){
     dirs.forEach(file => {
         if((file.indexOf('resized_appImage.')==-1)&&(file.indexOf('appImage.') != -1)&&(appImage == false)){
             appImage = false;
-            sharp('./public/app/'+appName+'/'+file)
+            sharp('./public/games/'+appName+'/'+file)
             .resize(600,600)
-            .toFile('./public/app/'+appName+'/'+'resized_'+file, (err, info) => {
+            .toFile('./public/games/'+appName+'/'+'resized_'+file, (err, info) => {
                 if(err){
                     console.log(err);
                 } else {
@@ -117,7 +149,7 @@ function appImageEdit(appName){
 }
 
 //open all directories in public/app
-fs.readdirSync('./public/app').forEach(file => {
+fs.readdirSync('./public/games').forEach(file => {
     if(file[0] != '.'){
         appImageEdit(file);
     }
@@ -141,7 +173,7 @@ function getVisits(){
 
 app.get('/', (req, res) => {
     //res.sendFile(__dirname + '/index.html');
-    fs.readdir(__dirname + '/public/app', (err, files) => {
+    fs.readdir(__dirname + '/public/games', (err, files) => {
         if (err) {
             console.log(err);
             res.send('error')
@@ -160,21 +192,21 @@ app.get('/', (req, res) => {
                 let appInfo = {'id':files[i],'name': app_name,'description':"",photos:[]};
                 //get photos and videos
                 //see if folder has resized_appImage.jpg or resized_appImage.png
-                if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.jpg')){
-                    appInfo.photos.push('/app/'+file+'/resized_appImage.jpg');
-                }else if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.png')){
-                    appInfo.photos.push('/app/'+file+'/resized_appImage.png');
-                }else if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.gif')){
-                    appInfo.photos.push('/app/'+file+'/resized_appImage.gif');
-                } else if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.jpeg')){
-                    appInfo.photos.push('/app/'+file+'/resized_appImage.jpeg');
-                } else if(fs.existsSync(__dirname + '/public/app/'+file+'/resized_appImage.webp')){
-                    appInfo.photos.push('/app/'+file+'/resized_appImage.webp');
+                if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.jpg')){
+                    appInfo.photos.push('/games/'+file+'/resized_appImage.jpg');
+                }else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.png')){
+                    appInfo.photos.push('/games/'+file+'/resized_appImage.png');
+                }else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.gif')){
+                    appInfo.photos.push('/games/'+file+'/resized_appImage.gif');
+                } else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.jpeg')){
+                    appInfo.photos.push('/games/'+file+'/resized_appImage.jpeg');
+                } else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.webp')){
+                    appInfo.photos.push('/games/'+file+'/resized_appImage.webp');
                 }
 
                 //if description.txt exists, add it to appInfo
-                if(fs.existsSync(__dirname + '/public/app/'+file+'/description.txt')){
-                    appInfo.description = fs.readFileSync(__dirname + '/public/app/'+file+'/description.txt', 'utf8');
+                if(fs.existsSync(__dirname + '/public/games/'+file+'/description.txt')){
+                    appInfo.description = fs.readFileSync(__dirname + '/public/games/'+file+'/description.txt', 'utf8');
                 }
                 //append app info to apps.apps
                 if(files[i] != '.DS_Store'){
@@ -219,6 +251,17 @@ app.get('/', (req, res) => {
     });
 
 });
+
+
+app.get('/app/:app', (req, res) => {
+    let app = req.params.app;
+    //check if app exists
+    getVisits().then((visits)=>{
+        res.render('appPage.ejs',{'app':app,visits:visits.main.visitors});
+    });
+});
+
+
 
 app.get('/visits',(req,res)=>{
     res.sendFile(__dirname + '/public/visits.json');
@@ -393,6 +436,7 @@ app.post('/admin/removevisits/:id',(req,res)=>{
     }
 });
 const keepAlive = require('./keepalive.js');
+const e = require('express');
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
