@@ -10,3 +10,17 @@ The index.ejs file in the /views directory is editable to customize the website 
 **boom now you have games**
 
 <h5>Live app at https://physics-central.com</h5>
+
+## .env file config example (optional)
+```
+# Webserver Port
+PORT=3000
+# Only allow chromebooks to use website
+CHROMEBOOK_ONLY=True
+# If chromebook only, add specific exceptions to certain useragents.
+ALLOWED_USER_AGENTS=["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"]
+# For /admin endpoint set password. Default username is admin
+ADMIN_COOKIE="PASSWORD"
+# If running webserver on raspberry pi, /rpitemps endpoint opens up and allows you to monitor temperature
+PI="True"
+```
