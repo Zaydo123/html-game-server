@@ -54,17 +54,18 @@ app.use(function(req, res, next) {
         if((req.get('user-agent').indexOf('CrOS')==-1)&&(process.env.CHROMEBOOK_ONLY == "True")){
             if(process.env.ALLOWED_USER_AGENTS != undefined){
                 if((process.env.ALLOWED_USER_AGENTS.indexOf(req.get('user-agent')) == -1)){
-                    if(process.env.ALLOWED_USER_AGENTS.length==0){
-                        next();
-                    } else {
-                        console.log("User-Agent: "+req.get('user-agent')+" is not allowed to access this site.");
-                        res.send('chromebook only! email themanishereinch@gmail.com if you want to access this site from your device');
-                    }
+                    console.log("User-Agent: "+req.get('user-agent')+" is not allowed to access this site.");
+                    res.send('chromebook only! email themanishereinch@gmail.com if you want to access this site from your device');
                 } else {
                 next();
                 }
             } else {
-                next();
+                if(process.env.CHROMEBOOK_ONLY == "True"){
+                    console.log("User-Agent: "+req.get('user-agent')+" is not allowed to access this site.");
+                    res.send('chromebook only! email themanishereinch@gmail.com if you want to access this site from your device');
+                } else{
+                    next();
+                }
             }
         } else {
             next();
