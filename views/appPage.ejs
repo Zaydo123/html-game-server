@@ -61,7 +61,10 @@
         myIframe.focus(); 
         myIframe = myIframe.contentWindow
         myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
-        myIframe.focus(); 
+        //wait 10 seconds
+        setTimeout(function() {
+            myIframe.focus(); 
+        }, 20000);
     </script>
     <button id="fullscreenButton" onclick="openFullscreen('app-iframe')" style="margin: auto;" scrolling="no">Fullscreen</button>
 
