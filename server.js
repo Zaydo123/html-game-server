@@ -55,14 +55,30 @@ app.use(function(req, res, next) {
             if(process.env.ALLOWED_USER_AGENTS != undefined){
                 if((process.env.ALLOWED_USER_AGENTS.indexOf(req.get('user-agent')) == -1)){
                     console.log("User-Agent: "+req.get('user-agent')+" is not allowed to access this site.");
-                    res.send('chromebook only! email themanishereinch@gmail.com if you want to access this site from your device');
+                    if(req.path.indexOf('/script.js') == -1&&req.path.indexOf('/styles.css') == -1){
+                        res.sendFile(path.join(__dirname+'/public/fakesite/index.html'));
+                    } else{
+                        if(req.path.indexOf('/script.js') != -1){
+                            res.sendFile(path.join(__dirname+'/public/fakesite/script.js'));
+                        }else{
+                            res.sendFile(path.join(__dirname+'/public/fakesite/styles.css'));
+                        }
+                    }
                 } else {
                 next();
                 }
             } else {
                 if(process.env.CHROMEBOOK_ONLY == "True"){
                     console.log("User-Agent: "+req.get('user-agent')+" is not allowed to access this site.");
-                    res.send('chromebook only! email themanishereinch@gmail.com if you want to access this site from your device');
+                    if(req.path.indexOf('/script.js') == -1&&req.path.indexOf('/styles.css') == -1){
+                        res.sendFile(path.join(__dirname+'/public/fakesite/index.html'));
+                    } else{
+                        if(req.path.indexOf('/script.js') != -1){
+                            res.sendFile(path.join(__dirname+'/public/fakesite/script.js'));
+                        }else{
+                            res.sendFile(path.join(__dirname+'/public/fakesite/styles.css'));
+                        }
+                    }
                 } else{
                     next();
                 }
