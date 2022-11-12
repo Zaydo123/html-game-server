@@ -10,8 +10,7 @@
     <link href="/css/index.css" rel="stylesheet" />
     <link rel="manifest" href="/manifest.json" />
     <script src="/fullScreen.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361"
-     crossorigin="anonymous"></script>
+    
   </head>
   <body>
     <!-- Install button, hidden by default -->
@@ -51,10 +50,64 @@
         </div>
       </div>
     </nav>
+    <div id="announcement" style="text-align:center;padding-top: 10px;"><h6>Maintaining this site has become increasingly more expensive as time has gone on. But it's time to ad adds. Thanks for understanding.</h6></div>
     <hr />
+    <div class="gamearea">
+      <div class="ADS" id="AD-LEFT" style="float:left;">
+        <!--<img src="https://via.placeholder.com/120x240?text=Vertical+Banner">-->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361"
+        crossorigin="anonymous"></script>
+        <!-- leftIframe -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-7596539695738361"
+             data-ad-slot="1642411896"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+      <div class="ADS" id="AD-RIGHT" style="float:right;">
+        <!--<img src="https://via.placeholder.com/120x240?text=Vertical+Banner">-->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361"crossorigin="anonymous"></script>
+         <!-- iframeright -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-7596539695738361"
+             data-ad-slot="9249439172"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
 
+      <style>
+        #AD-LEFT{
+          padding-left: 5%;
+          padding-right: 0%;
+          padding-top: 5%;
+        }
+        #AD-RIGHT{
+          padding-top: 5%;
+          padding-left: 0%;
+          padding-right: 5%;
+
+        }
+        .ADS{
+          margin: auto;
+        }
+      </style>
+
+      <!------------------------------------------------------------------------------------------->
+      <iframe id="app-iframe" height="500" width="1000" src="https://physicsbucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
+
+
+
+    </div>
     <!--<iframe id="app-iframe" height="800" width="1000" onclick="focusIframe()" src=""></iframe>-->
-    <iframe id="app-iframe" height="500" width="1000" src="https://physicsbucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
+    
     <script>
         //every 5 seconds check if the iframe is focused
         let myIframe = document.getElementById('app-iframe');
@@ -95,7 +148,21 @@
             <li>Tayseer</li>
             <li>Zane</li>
           </div>
+          
         </div>
+      </div>
+      <div align="center" class="ADS-footer" id="footer">
+        <!--<img src="https://via.placeholder.com/728x90?text=728x90+Leaderboard">-->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361" crossorigin="anonymous"></script>
+        <!-- footer -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-7596539695738361"
+             data-ad-slot="7640792773"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+
       </div>
     </footer>
     <!-- BootstrapJS -->
