@@ -116,7 +116,7 @@ app.use(function (req, res, next) {
                     }
     
                     json = JSON.stringify(obj); //convert it back to json
-                    fs.writeFile('public/visits.json', json, 'utf8', (err)=>{
+                    fs.writeFileSync('public/visits.json', json, 'utf8', (err)=>{
                         if(err){
                             console.log(err);
                         }
