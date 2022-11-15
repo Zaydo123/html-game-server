@@ -101,7 +101,7 @@
       </style>
 
       <!------------------------------------------------------------------------------------------->
-      <iframe id="app-iframe" height="500" width="1000" src="https://physicsbucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
+      <iframe id="app-iframe" height="500" width="950" src="https://physicsbucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
 
 
 
@@ -114,10 +114,10 @@
         myIframe.focus(); 
         myIframe = myIframe.contentWindow
         myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
-        //every 10 seconds
+        //every 5 seconds
         setInterval(function() {
             myIframe.focus(); 
-        }, 10000);
+        }, 5000);
     </script>
     <button id="fullscreenButton" onclick="openFullscreen('app-iframe')" style="margin: auto;" scrolling="no">Fullscreen</button>
 
