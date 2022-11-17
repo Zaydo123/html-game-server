@@ -53,6 +53,14 @@
       </div>
     </nav>
     <div id="announcement" style="text-align:center;padding-top: 10px;"><h6>Maintaining this site has become increasingly more expensive as time has gone on. But it's time to add ads. Thanks for understanding.</h6></div>
+    <script>
+      //on click annoucement hide it
+      document.getElementById("announcement").addEventListener("click", function(){
+        document.getElementById("announcement").style.display = "none";
+      });
+    </script>
+    
+    
     <hr />
     <div class="gamearea">
       <div class="ADS" id="AD-LEFT">
@@ -81,16 +89,14 @@
 
       <style>
         #AD-LEFT{
-          padding-top: 3%;
-          padding-left: 4%;
+
           float: left;
           position: relative;
           height: fit-content;
           width:fit-content;
         }
         #AD-RIGHT{
-          padding-top: 3%;
-          padding-right: 4%;
+
           float: right;
           position: relative;
           height: fit-content;
