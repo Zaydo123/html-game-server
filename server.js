@@ -8,8 +8,10 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const sharp = require('sharp');
 
+//all app images are 600x600 by default
+
 dotenv.config();
-let ignoredRoutes = ['','visits','requestapp','admin'];
+let ignoredRoutes = ['visits','requestapp','admin'];
 let port = process.env.PORT || 3000;
 
 //random string generator
@@ -20,18 +22,17 @@ function randomString(length, chars) {
 }
 
 let admin_creds = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-console.log("Admin Credentials (if not specified in .env file): "+admin_creds);
 const ADMIN_COOKIE = process.env.ADMIN_COOKIE || admin_creds;
 
 //see which static files most popular and how many times they are requested
 
 //make json files if not exist on startup 
 
-//visits.json
-if(fs.existsSync('./public/visits.json')){
+//games.json
+if(fs.existsSync('./public/games.json')){
 }else{
-    console.log("visits.json does not exist, creating...");
-    fs.writeFileSync('./public/visits.json', '{"main":{"apps":[],"visitors":0}}');
+    console.log("games.json does not exist, creating...");
+    fs.writeFileSync('./public/games.json', '{"main":{"apps":[],"visitors":0}}');
 }
 //requestapps.json
 if(fs.existsSync('./requestapps.json')){
@@ -96,27 +97,27 @@ app.use(function (req, res, next) {
     let extension = path.extname(filename);
     if (extension === ''&& ignoredRoutes.indexOf(filename) == -1) {
         //console.log('Request for ' + filename + ' received');
-        //open visits.json file and update main.apps
-        fs.readFile('public/visits.json', 'utf8', function readFileCallback(err, data){
+        //open games.json file and update main.apps
+        fs.readFile('public/games.json', 'utf8', function readFileCallback(err, data){
             if (err){
                 console.log(err);
             } else {
                 try{
                     obj = JSON.parse(data); //now it an object
                     let found = false;
-                    for(let i = 0; i < obj.main.apps.length; i++){
-                        if(obj.main.apps[i].route_name == filename){
-                            obj.main.apps[i].visits++;
-                            found = true;
-                            break;
+                    if(filename==""){
+                        obj.home_visits++;
+                    } else{
+                        for(let i = 0; i < obj.games.length; i++){
+                            if(obj.games[i].name==filename){
+                                obj.games[i].visits++;
+                                found = true;
+                                break;
+                            }
                         }
                     }
-                    if(!found){
-                        obj.main.apps.push({route_name:filename,description:"",image:"",visits:1});
-                    }
-    
                     json = JSON.stringify(obj); //convert it back to json
-                    fs.writeFileSync('public/visits.json', json, 'utf8', (err)=>{
+                    fs.writeFileSync('public/games.json', json, 'utf8', (err)=>{
                         if(err){
                             console.log(err);
                         }
@@ -124,7 +125,7 @@ app.use(function (req, res, next) {
                 } catch{
                     console.log('ERROR parsing in visits middleware');
                 }
-                //if cant find app in obj.main.apps[index].route_name then add it
+                //if cant find app in obj.games[index].route_name then add it
             }
         });
             
@@ -136,158 +137,45 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'ejs');
 
-
-//look if appImage exists in public/games/appName/
-function appImageEdit(appName){
-    let appImage = false;
-    let dirs = fs.readdirSync('./public/games/'+appName);
-    //dont continue if resized image already exists
-    for(let i = 0; i < dirs.length; i++){
-        if(dirs[i].includes("resized")){
-            appImage = true;
-        }
-    }
-    dirs.forEach(file => {
-        if((file.indexOf('resized_appImage.')==-1)&&(file.indexOf('appImage.') != -1)&&(appImage == false)){
-            appImage = false;
-            sharp('./public/games/'+appName+'/'+file)
-            .resize(600,600)
-            .toFile('./public/games/'+appName+'/'+'resized_'+file, (err, info) => {
-                if(err){
-                    console.log(err);
-                } else {
-                    console.log('resizing '+file+' to '+info.width+'x'+info.height);
-                }
-            });
-
-        }
-    });
-    return appImage;
-}
-
-//open all directories in public/app
-fs.readdirSync('./public/games').forEach(file => {
-    if(file[0] != '.'){
-        appImageEdit(file);
-    }
-});
-
-
-
-//function that reads visits.json and returns the json object
-function getVisits(){
-    return new Promise((resolve,reject)=>{
-        fs.readFile('public/visits.json', 'utf8', function readFileCallback(err, data){
-            if (err){
-                console.log(err);
-            } else {
-                resolve(JSON.parse(data));
-            }
-        });
-    }
-    );  
-}
-
 app.get('/', (req, res) => {
     //res.sendFile(__dirname + '/index.html');
-    fs.readdir(__dirname + '/public/games', (err, files) => {
-        if (err) {
-            console.log(err);
-            res.send('error')
-        } else {
-            //turn files into a dictionary
-            let apps = {'apps':[]};
-            for (let i = 0; i < files.length; i++) {
-                let file = files[i];
-                let app_name = file.split('.')[0];
-                //replace hyphens with spaces
-                while(app_name.indexOf('-') != -1){
-                    app_name = app_name.replace('-',' ');
-                }
-                //capitalize first letter of each word
-                app_name = app_name.charAt(0).toUpperCase() + app_name.slice(1);
-                let appInfo = {'id':files[i],'name': app_name,'description':"",photos:[]};
-                //get photos and videos
-                //see if folder has resized_appImage.jpg or resized_appImage.png
-                if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.jpg')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.jpg');
-                }else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.png')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.png');
-                }else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.gif')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.gif');
-                } else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.jpeg')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.jpeg');
-                } else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.webp')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.webp');
-                }
-
-                //if description.txt exists, add it to appInfo
-                if(fs.existsSync(__dirname + '/public/games/'+file+'/description.txt')){
-                    appInfo.description = fs.readFileSync(__dirname + '/public/games/'+file+'/description.txt', 'utf8');
-                }
-                //append app info to apps.apps
-                if(files[i] != '.DS_Store'){
-                    apps.apps.push(appInfo);
-                }   
-            }
-            //read visits then send to index.ejs
-
-            //add 1 to visits
-            fs.readFile(__dirname + '/public/visits.json', (err, data) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    let file = JSON.parse(data);
-                    file.main.visitors++
-                    fs.writeFile(__dirname + '/public/visits.json', JSON.stringify(file), (err) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            getVisits().then((visits)=>{
-                                //sort apps by visits
-                                apps.apps.sort((a,b)=>{
-                                    let aVisits = 0;
-                                    let bVisits = 0;
-                                    for(let i = 0; i < visits.main.apps.length; i++){
-                                        if(visits.main.apps[i].route_name == a.id.split('.')[0]){
-                                            aVisits = visits.main.apps[i].visits;
-                                        }
-                                        if(visits.main.apps[i].route_name == b.id.split('.')[0]){
-                                            bVisits = visits.main.apps[i].visits;
-                                        }
-                                    }
-                                    return bVisits - aVisits;
-                                });
-                                res.render('index.ejs',{'appList':apps,visits:visits.main.visitors});
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
-
+        //read games.json
+        let apps =  JSON.parse(fs.readFileSync("public/games.json", "utf8"));
+        apps.games.sort((a, b) => parseFloat(a.ranking) - parseFloat(b.ranking));
+        res.render('index.ejs',{"appList":apps});
+        //open games.json
 });
 
 
 app.get('/app/:app', (req, res) => {
     let app = req.params.app;
-    //check if app exists
-    getVisits().then((visits)=>{
-        res.render('appPage.ejs',{'app':app,visits:visits.main.visitors});
+    fs.readFile('public/games.json', 'utf8', function readFileCallback(err, data){
+        if (err){
+            console.log(err);
+        } else {
+            let json=JSON.parse(data);
+            res.render('appPage.ejs',{'app':app,'visits':json.home_visits});
+        }
     });
+
 });
 
 
 
 app.get('/visits',(req,res)=>{
-    res.sendFile(__dirname + '/public/visits.json');
+    res.sendFile(__dirname + '/public/games.json');
 });
 
 app.get('/requestapp',(req,res)=>{
-    getVisits().then((visits)=>{
-        res.render('requestapp.ejs',{visits:visits.main.visitors});
+    fs.readFile('public/games.json', 'utf8', function readFileCallback(err, data){
+        if (err){
+            console.log(err);
+        } else {
+            let json=JSON.parse(data);
+            res.render('requestapp.ejs',{visits:json.home_visits});
+        }
     });
+    
 });
 
 
@@ -332,15 +220,15 @@ app.get('/rpitemps', function (req, res) {
 
 
 //admin page
-//every hour read visits.json and write to visits.csv
+//every hour read games.json and write to visits.csv
 setInterval(()=>{
-    fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+    fs.readFile(__dirname + '/public/games.json', (err, data) => {
         if (err) {
             console.log(err);
         } else {
-            console.log('reading visits.json');
+            console.log('reading games.json');
             let file = JSON.parse(data);
-            let csv = file.main.visitors + ',' + new Date().toLocaleString() + '\n';
+            let csv = file.home_visits+ ',' + new Date().toLocaleString() + '\n';
             fs.appendFile(__dirname + '/public/visits.csv',csv,(err)=>{
                 if(err){
                     console.log(err);
@@ -351,7 +239,7 @@ setInterval(()=>{
 },3600000);
 
 
-//every 24 hours delete contents of visits.csv and write header
+//every week delete contents of visits.csv and write header
 setInterval(()=>{
     console.log('deleting visits.csv contents');
     fs.writeFile(__dirname + '/public/visits.csv','visitors,date,time\n',(err)=>{
@@ -359,12 +247,7 @@ setInterval(()=>{
             console.log(err);
         }
     });
-},86400000);
-
-
-
-
-
+},604800000);
 
 app.get('/admin',(req,res)=>{
     //open requestapps.json
@@ -378,12 +261,12 @@ app.get('/admin',(req,res)=>{
             } else {
                 let file = JSON.parse(data);
                 
-                fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+                fs.readFile(__dirname + '/public/games.json', (err, data) => {
                     if (err) {
-                        console.loyg(err);
+                        console.log(err);
                     } else {
                         let apps = JSON.parse(data);
-                        res.render('admin.ejs',{'authorized':true,'apps':apps.main.apps,'suggestions':file.requests});
+                        res.render('admin.ejs',{'authorized':true,'apps':apps.games,'suggestions':file.requests});
                     }
                 });
             }
@@ -426,21 +309,21 @@ app.post('/admin/removevisits/:id',(req,res)=>{
         res.send('not authorized');
     } else{
         console.log('got rq '+req.params.id);
-        //open /public/visits.json and delete main.apps entry
+        //open /public/games.json and delete main.apps entry
         //find item by roue_name and remove it
-        fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+        fs.readFile(__dirname + '/public/games.json', (err, data) => {
             if (err) {
                 console.log(err);
                 res.send('error');
             } else {
                 let file = JSON.parse(data);
-                for(let i = 0; i < file.main.apps.length; i++){
-                    if(file.main.apps[i].route_name == req.params.id){
-                        file.main.apps[i].visits = 0;
+                for(let i = 0; i < file.games.length; i++){
+                    if(file.games[i].id == req.params.id){
+                        file.games[i].visits = 0;
                         break;
                     }
                 }
-                fs.writeFile(__dirname + '/public/visits.json', JSON.stringify(file), (err) => {
+                fs.writeFileSync(__dirname + '/public/games.json', JSON.stringify(file), (err) => {
                     if (err) {
                         console.log(err);
                         res.send('error');

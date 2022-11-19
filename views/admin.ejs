@@ -59,9 +59,9 @@
                 </tr>
                 <%for(let i=0;i<apps.length;i++){%>
                     <%if(apps[i]['visits']!=0){%>
-                    <tr id="<%=apps[i]['route_name']%>">
-                        <td><button onclick="removeVisits('<%=apps[i]["route_name"]%>');">X</button></td>
-                        <td><p><%=apps[i]['route_name']%></p></td>
+                    <tr id="<%=apps[i]['id']%>">
+                        <td><button onclick='removeVisits("<%=apps[i]['id']%>");'>X</button></td>
+                        <td><p><%=apps[i]['name']%></p></td>
                         <td><p><%=apps[i]['visits']%></p></td>
                     </tr>
                     <%}%>

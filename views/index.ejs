@@ -49,7 +49,7 @@
           </ul>
         </div>
         <div class="total-visits">
-          <a class="nav" style="color: white; font-size: large">Total Visits: <%=visits%></a>
+          <a class="nav" style="color: white; font-size: large">Total Visits: <%=appList.home_visits%></a>
         </div>
       </div>
     </nav>
@@ -150,7 +150,7 @@
     <hr />
     <div class="container">
         <%let r=0;%>
-        <% for(let i=0;i<appList.apps.length ;i++){ %>
+        <% for(let i=0;i<appList.games.length ;i++){ %>
             <% if(i%3==0&&i!=0){%>
                <%r++;%>
                <% if(adsAdded<maxAds){ %>
@@ -174,7 +174,7 @@
 
                 <div class="row text-center mt-4">
             <% }else{if(i==0){%><div class="row text-center"><%}} %>
-            <% if((appList.apps.length-1==i)&&(i%3!=0)){ %>
+            <% if((appList.games.length-1==i)&&(i%3!=0)){ %>
               <div class="col-md-4 pb-1 pb-md-0">
                 <div class="card">
 
@@ -190,17 +190,17 @@
               <div class="card">
                 <img
                   class="card-img-top"
-                  <%if(appList.apps[i].photos[0]){%>
-                    src=<%=appList.apps[i].photos[0]%>
+                  <%if(appList.games[i].image){%>
+                    src=<%=appList.games[i].image%>
                   <%}else{%>
                     src="images/400x200.gif"
                   <%}%>
                   alt="Card image cap"
                 />
                 <div class="card-body">
-                  <h5 class="card-title"><%=appList.apps[i].name%></h5>
-                  <p class="card-text"><%=appList.apps[i].description%></p>
-                  <a href="/app/<%=appList.apps[i].id%>" class="btn btn-primary">Play Game&nbsp;</a>
+                  <h5 class="card-title"><%=appList.games[i].name%></h5>
+                  <p class="card-text"><%=appList.games[i].description%></p>
+                  <a href="/app/<%=appList.games[i].id%>" class="btn btn-primary">Play Game&nbsp;</a>
                 </div>
               </div>
             </div>
