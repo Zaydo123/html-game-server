@@ -1,4 +1,4 @@
-const cacheName='cache-2020.10.06-01';
+const cacheName='cache-2022.11.20';
 self.addEventListener('fetch', (event) => {
   event.respondWith(async function() {
 
