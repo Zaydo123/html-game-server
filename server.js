@@ -109,7 +109,7 @@ app.use(function (req, res, next) {
                         obj.home_visits++;
                     } else{
                         for(let i = 0; i < obj.games.length; i++){
-                            if(obj.games[i].name==filename){
+                            if(obj.games[i].id==filename){
                                 obj.games[i].visits++;
                                 found = true;
                                 break;
