@@ -1,9 +1,6 @@
 /.DS_Store
 **/.DS_Store
 .env
-ips.json
-visits.json
-public/visits.json
 public/visits.csv
 requestapps.json
 /node_modules
