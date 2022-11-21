@@ -335,8 +335,6 @@ app.post('/admin/removevisits/:id',(req,res)=>{
         });
     }
 });
-const keepAlive = require('./keepalive.js');
-const e = require('express');
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
