@@ -1,11 +1,11 @@
 {
-    "home_visits": 28930,
+    "home_visits": 29298,
     "games": [
         {
             "name": "Cookie Clicker",
             "id": "Cookie-Clicker",
             "image": "/images/game_images/resized_appImage_Cookie-Clicker.png",
-            "visits": 153,
+            "visits": 174,
             "ranking": 10,
             "description": ""
         },
@@ -13,7 +13,7 @@
             "name": "Mario Vs Luigi",
             "id": "Mario-Vs-Luigi",
             "image": "/images/game_images/resized_appImage_Mario-Vs-Luigi.png",
-            "visits": 41,
+            "visits": 56,
             "ranking": 26,
             "description": ""
         },
@@ -21,7 +21,7 @@
             "name": "Super Mario 64",
             "id": "Super-Mario-64",
             "image": "/images/game_images/resized_appImage_Super-Mario-64.png",
-            "visits": 92,
+            "visits": 125,
             "ranking": 5,
             "description": ""
         },
@@ -29,7 +29,7 @@
             "name": "2048",
             "id": "2048",
             "image": "/images/game_images/resized_appImage_2048.gif",
-            "visits": 55,
+            "visits": 71,
             "ranking": 8,
             "description": ""
         },
@@ -37,7 +37,7 @@
             "name": "Slope",
             "id": "Slope",
             "image": "/images/game_images/resized_appImage_Slope.png",
-            "visits": 204,
+            "visits": 284,
             "ranking": 4,
             "description": ""
         },
@@ -45,7 +45,7 @@
             "name": "Thwack",
             "id": "thwack",
             "image": "/images/game_images/resized_appImage_thwack.png",
-            "visits": 15,
+            "visits": 21,
             "ranking": 15,
             "description": ""
         },
@@ -53,7 +53,7 @@
             "name": "Narrow One",
             "id": "narrow-one",
             "image": "/images/game_images/resized_appImage_narrow-one.png",
-            "visits": 41,
+            "visits": 60,
             "ranking": 6,
             "description": ""
         },
@@ -61,7 +61,7 @@
             "name": "Geometry Dash",
             "id": "Geometry-Dash",
             "image": "/images/game_images/resized_appImage_Geometry-Dash.png",
-            "visits": 40,
+            "visits": 58,
             "ranking": 27,
             "description": ""
         },
@@ -69,7 +69,7 @@
             "name": "Picohot",
             "id": "picohot",
             "image": "/images/game_images/resized_appImage_picohot.png",
-            "visits": 15,
+            "visits": 27,
             "ranking": 18,
             "description": ""
         },
@@ -77,7 +77,7 @@
             "name": "Cat Ninja",
             "id": "Cat-Ninja",
             "image": "/images/game_images/resized_appImage_Cat-Ninja.jpeg",
-            "visits": 53,
+            "visits": 74,
             "ranking": 9,
             "description": ""
         },
@@ -85,7 +85,7 @@
             "name": "Tanuki Sunset",
             "id": "tanuki-sunset",
             "image": "/images/game_images/resized_appImage_tanuki-sunset.webp",
-            "visits": 78,
+            "visits": 111,
             "ranking": 10,
             "description": ""
         },
@@ -93,7 +93,7 @@
             "name": "Clay Scape",
             "id": "clay-scape",
             "image": "/images/game_images/resized_appImage_clay-scape.png",
-            "visits": 14,
+            "visits": 23,
             "ranking": 11,
             "description": ""
         },
@@ -101,7 +101,7 @@
             "name": "Axis Football League",
             "id": "Axis-Football-League",
             "image": "/images/game_images/resized_appImage_Axis-Football-League.png",
-            "visits": 33,
+            "visits": 44,
             "ranking": 12,
             "description": ""
         },
@@ -109,7 +109,7 @@
             "name": "HexGL",
             "id": "HexGL-master",
             "image": "/images/game_images/resized_appImage_HexGL-master.jpeg",
-            "visits": 15,
+            "visits": 23,
             "ranking": 13,
             "description": ""
         },
@@ -117,7 +117,7 @@
             "name": "Cursed To Golf",
             "id": "cursed-to-golf",
             "image": "/images/game_images/resized_appImage_cursed-to-golf.jpeg",
-            "visits": 18,
+            "visits": 20,
             "ranking": 14,
             "description": ""
         },
@@ -125,7 +125,7 @@
             "name": "Ultraviolet",
             "id": "Ultraviolet",
             "image": "/images/game_images/resized_appImage_Ultraviolet.png",
-            "visits": 234,
+            "visits": 246,
             "ranking": 15,
             "description": ""
         },
@@ -133,7 +133,7 @@
             "name": "Chess",
             "id": "chess",
             "image": "/images/game_images/resized_appImage_chess.png",
-            "visits": 58,
+            "visits": 62,
             "ranking": 16,
             "description": ""
         },
@@ -141,7 +141,7 @@
             "name": "Drift Hunters",
             "id": "drift-hunters",
             "image": "/images/game_images/resized_appImage_drift-hunters.png",
-            "visits": 299,
+            "visits": 386,
             "ranking": 29,
             "description": ""
         },
@@ -149,15 +149,15 @@
             "name": "Minecraft",
             "id": "Minecraft",
             "image": "/images/game_images/resized_appImage_Minecraft.png",
-            "visits": 158,
+            "visits": 217,
             "ranking": 2,
-            "description": "Multiplayer back online"
+            "description": ""
         },
         {
             "name": "Tenjutsu",
             "id": "tenjutsu",
             "image": "/images/game_images/resized_appImage_tenjutsu.png",
-            "visits": 18,
+            "visits": 25,
             "ranking": 19,
             "description": ""
         },
@@ -165,7 +165,7 @@
             "name": "Shell Shockers",
             "id": "Shell-Shockers",
             "image": "/images/game_images/resized_appImage_Shell-Shockers.jpeg",
-            "visits": 48,
+            "visits": 70,
             "ranking": 2,
             "description": ""
         },
@@ -173,7 +173,7 @@
             "name": "Retrobowl",
             "id": "retrobowl",
             "image": "/images/game_images/resized_appImage_retrobowl.jpeg",
-            "visits": 300,
+            "visits": 405,
             "ranking": 1,
             "description": ""
         },
@@ -181,15 +181,15 @@
             "name": "Friday Night Funkin",
             "id": "Friday-Night-Funkin",
             "image": "/images/game_images/resized_appImage_Friday-Night-Funkin.jpg",
-            "visits": 36,
+            "visits": 54,
             "ranking": 22,
             "description": ""
-        }, 
+        },
         {
-            "name": "Happy Wheels", 
+            "name": "Happy Wheels",
             "id": "3245676432",
             "image": "/images/game_images/happywheels.jpeg",
-            "visits": 0,
+            "visits": 71,
             "ranking": 1,
             "description": ""
         }
