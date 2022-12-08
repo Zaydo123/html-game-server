@@ -112,8 +112,8 @@
       <%for(let i=0;i<appList.length;i++){%>
         <%if(appList[i].id==app){%>
           <%if(appList[i].gamedistribution!=undefined){%>
-          <script>console.log("helllo?")</script>
-          <iframe id="app-iframe" src="https://html5.gamedistribution.com/<%=appList[i].gamedistribution%>/?gd_sdk_referrer_url=https://www.physics-central.com/app/basketball-stars" width="920" height="480" scrolling="none" frameborder="0"></iframe>
+          <script>console.log("game using gamedistribution iframe")</script>
+          <iframe id="app-iframe" src="https://html5.gamedistribution.com/<%=appList[i].gamedistribution%>/?gd_sdk_referrer_url=https://www.physics-central.com/app/<%=appList[i].id%>" width="920" height="480" scrolling="none" frameborder="0"></iframe>
           <%}else{%>
             <iframe id="app-iframe" height="500" width="950" src="https://venturebucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
             <script>
