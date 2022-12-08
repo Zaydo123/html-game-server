@@ -154,7 +154,7 @@ app.get('/app/:app', (req, res) => {
             console.log(err);
         } else {
             let json=JSON.parse(data);
-            res.render('appPage.ejs',{'app':app,'visits':json.home_visits});
+            res.render('appPage.ejs',{'app':app,'visits':json.home_visits,'appList':json.games});
         }
     });
 

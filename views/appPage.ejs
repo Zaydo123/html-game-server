@@ -108,24 +108,35 @@
       </style>
 
       <!------------------------------------------------------------------------------------------->
-      <iframe id="app-iframe" height="500" width="950" src="https://venturebucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
+
+      <%for(let i=0;i<appList.length;i++){%>
+        <%if(appList[i].id==app){%>
+          <%if(appList[i].gamedistribution!=undefined){%>
+          <script>console.log("helllo?")</script>
+          <iframe id="app-iframe" src="https://html5.gamedistribution.com/<%=appList[i].gamedistribution%>/?gd_sdk_referrer_url=https://www.physics-central.com/app/basketball-stars" width="920" height="480" scrolling="none" frameborder="0"></iframe>
+          <%}else{%>
+            <iframe id="app-iframe" height="500" width="950" src="https://venturebucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
+            <script>
+              //every 5 seconds check if the iframe is focused
+              let myIframe = document.getElementById('app-iframe');
+              myIframe.focus(); 
+              myIframe = myIframe.contentWindow
+              myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
+              //every 5 seconds
+              setInterval(function() {
+                  myIframe.focus(); 
+              }, 5000);
+            </script>
+          <%}%>
+        <%}%>
+      <%}%>
 
 
 
     </div>
     <!--<iframe id="app-iframe" height="800" width="1000" onclick="focusIframe()" src=""></iframe>-->
     
-    <script>
-        //every 5 seconds check if the iframe is focused
-        let myIframe = document.getElementById('app-iframe');
-        myIframe.focus(); 
-        myIframe = myIframe.contentWindow
-        myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
-        //every 5 seconds
-        setInterval(function() {
-            myIframe.focus(); 
-        }, 5000);
-    </script>
+
     <button id="fullscreenButton" onclick="openFullscreen('app-iframe')" style="margin: auto;" scrolling="no">Fullscreen</button>
 
     <hr />
