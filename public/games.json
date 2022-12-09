@@ -1,5 +1,5 @@
 {
-    "home_visits": 46146,
+    "home_visits": 46157,
     "games": [
         {
             "name": "Cookie Clicker",
@@ -221,13 +221,22 @@
             "gamedistribution": "762c932b4db74c6da0c1d101b2da8be6"
         },
         {
-            "name":"Snowball Racing",
+            "name": "Snowball Racing",
             "id": "snowball-racing",
-            "image":"/images/game_images/snowball-racing.jpeg",
-            "visits":0,
-            "ranking":6,
-            "description":"New!",
-            "gamedistribution":"85d40b1334dd42fb8c9416e42fb46bb4"
+            "image": "/images/game_images/snowball-racing.jpeg",
+            "visits": 1,
+            "ranking": 6,
+            "description": "New!",
+            "gamedistribution": "85d40b1334dd42fb8c9416e42fb46bb4"
+        },
+        {
+            "name": "Stick Duel: The War",
+            "id": "stick-duel-the-war",
+            "image": "/images/game_images/stick-duel-the-war.jpeg",
+            "visits": 2,
+            "ranking": 6,
+            "description": "New!",
+            "gamedistribution": "f6182cbcecbc49f0b6c3a7182e1a2186"
         }
     ]
 }
