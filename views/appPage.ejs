@@ -118,14 +118,22 @@
             <iframe id="app-iframe" height="500" width="950" src="https://venturebucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
             <script>
               //every 5 seconds check if the iframe is focused
-              let myIframe = document.getElementById('app-iframe');
-              myIframe.focus(); 
+
+              //on iframe click focus it
+              document.getElementById("app-iframe").addEventListener("click", function(){
+                focusIframe();
+              });
+              function focusIframe(){
+                let frame = document.getElementById('app-iframe');
+                frame.focus(); 
+                //disable scrolling
+                frame.contentWindow.document.body.style.overflow = 'hidden';  
+                return frame
+              }
+
+              let myIframe = focusIframe();
               myIframe = myIframe.contentWindow
               myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
-              //every 5 seconds
-              setInterval(function() {
-                  myIframe.focus(); 
-              }, 5000);
             </script>
           <%}%>
         <%}%>
