@@ -121,7 +121,7 @@
 
               //on iframe click focus it
               document.getElementById("app-iframe").addEventListener("click", function(){
-                focusIframe();
+                focusIframe(); 
               });
               function focusIframe(){
                 let frame = document.getElementById('app-iframe');
@@ -134,6 +134,22 @@
               let myIframe = focusIframe();
               myIframe = myIframe.contentWindow
               myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
+              let needsConstantFocus;
+              <%if(appList[i].needsConstantFocus==true){%>
+                needsConstantFocus = true;
+              <%}else{%>
+                needsConstantFocus = false;
+              <%}%>
+
+              if(needsConstantFocus){
+                console.log("game needs constant focus");
+                setInterval(function() {
+                  myIframe.focus(); 
+                }, 5000);
+              } else{
+                console.log("game does not need constant focus");
+              }
+
             </script>
           <%}%>
         <%}%>
