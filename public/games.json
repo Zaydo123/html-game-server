@@ -1,1 +1,251 @@
-{"home_visits":48233,"games":[{"name":"Cookie Clicker","id":"Cookie-Clicker","image":"/images/game_images/resized_appImage_Cookie-Clicker.png","visits":385,"ranking":10,"description":""},{"name":"Mario Vs Luigi","id":"Mario-Vs-Luigi","image":"/images/game_images/resized_appImage_Mario-Vs-Luigi.png","visits":116,"ranking":26,"description":""},{"name":"Super Mario 64","id":"Super-Mario-64","image":"/images/game_images/resized_appImage_Super-Mario-64.png","visits":307,"ranking":5,"description":""},{"name":"2048","id":"2048","image":"/images/game_images/resized_appImage_2048.gif","visits":116,"ranking":8,"description":""},{"name":"Slope","id":"Slope","image":"/images/game_images/resized_appImage_Slope.png","visits":722,"ranking":4,"description":""},{"name":"Thwack","id":"thwack","image":"/images/game_images/resized_appImage_thwack.png","visits":69,"ranking":15,"description":""},{"name":"Narrow One","id":"narrow-one","image":"/images/game_images/resized_appImage_narrow-one.png","visits":112,"ranking":6,"description":""},{"name":"Geometry Dash","id":"Geometry-Dash","image":"/images/game_images/resized_appImage_Geometry-Dash.png","visits":123,"ranking":27,"description":""},{"name":"Picohot","id":"picohot","image":"/images/game_images/resized_appImage_picohot.png","visits":66,"ranking":18,"description":""},{"name":"Cat Ninja","id":"Cat-Ninja","image":"/images/game_images/resized_appImage_Cat-Ninja.jpeg","visits":123,"ranking":9,"description":""},{"name":"Tanuki Sunset","id":"tanuki-sunset","image":"/images/game_images/resized_appImage_tanuki-sunset.webp","visits":289,"ranking":10,"description":""},{"name":"Clay Scape","id":"clay-scape","image":"/images/game_images/resized_appImage_clay-scape.png","visits":109,"ranking":11,"description":""},{"name":"Axis Football League","id":"Axis-Football-League","image":"/images/game_images/resized_appImage_Axis-Football-League.png","visits":90,"ranking":12,"description":""},{"name":"HexGL","id":"HexGL-master","image":"/images/game_images/resized_appImage_HexGL-master.jpeg","visits":50,"ranking":13,"description":""},{"name":"Cursed To Golf","id":"cursed-to-golf","image":"/images/game_images/resized_appImage_cursed-to-golf.jpeg","visits":39,"ranking":14,"description":""},{"name":"Ultraviolet","id":"Ultraviolet","image":"/images/game_images/resized_appImage_Ultraviolet.png","visits":291,"ranking":15,"description":""},{"name":"Chess","id":"chess","image":"/images/game_images/resized_appImage_chess.png","visits":76,"ranking":16,"description":""},{"name":"Drift Hunters","id":"drift-hunters","image":"/images/game_images/resized_appImage_drift-hunters.png","visits":489,"ranking":29,"description":""},{"name":"Minecraft","id":"Minecraft","image":"/images/game_images/resized_appImage_Minecraft.png","visits":2019,"ranking":2,"description":"","needsConstantFocus":true},{"name":"Tenjutsu","id":"tenjutsu","image":"/images/game_images/resized_appImage_tenjutsu.png","visits":52,"ranking":19,"description":""},{"name":"Shell Shockers","id":"Shell-Shockers","image":"/images/game_images/resized_appImage_Shell-Shockers.jpeg","visits":139,"ranking":2,"description":""},{"name":"Retrobowl","id":"retrobowl","image":"/images/game_images/resized_appImage_retrobowl.jpeg","visits":971,"ranking":1,"description":""},{"name":"Friday Night Funkin","id":"Friday-Night-Funkin","image":"/images/game_images/resized_appImage_Friday-Night-Funkin.jpg","visits":129,"ranking":22,"description":""},{"name":"Happy Wheels","id":"3245676432","image":"/images/game_images/happywheels.jpeg","visits":369,"ranking":1,"description":""},{"name":"Basketball Stars","id":"basketball-stars","image":"/images/game_images/basketball-stars.jpeg","visits":195,"ranking":5,"description":"New!","gamedistribution":"69d78d071f704fa183d75b4114ae40ec"},{"name":"Fruit Ninja","id":"fruit-ninja","image":"/images/game_images/fruit-ninja.jpeg","visits":129,"ranking":5,"description":"New!","gamedistribution":"2e0f4c7c23b041768bf7869a1ed89669"},{"name":"VEX 3","id":"vex-3","image":"/images/game_images/vex-3.jpeg","visits":158,"ranking":5,"description":"New!","gamedistribution":"762c932b4db74c6da0c1d101b2da8be6"},{"name":"Snowball Racing","id":"snowball-racing","image":"/images/game_images/snowball-racing.jpeg","visits":115,"ranking":6,"description":"New!","gamedistribution":"85d40b1334dd42fb8c9416e42fb46bb4"},{"name":"Stick Duel: The War","id":"stick-duel-the-war","image":"/images/game_images/stick-duel-the-war.jpeg","visits":114,"ranking":6,"description":"New!","gamedistribution":"f6182cbcecbc49f0b6c3a7182e1a2186"}]}
+{
+    "home_visits": 55814,
+    "games": [
+        {
+            "name": "Cookie Clicker",
+            "id": "Cookie-Clicker",
+            "image": "/images/game_images/resized_appImage_Cookie-Clicker.png",
+            "visits": 771,
+            "ranking": 10,
+            "description": ""
+        },
+        {
+            "name": "Mario Vs Luigi",
+            "id": "Mario-Vs-Luigi",
+            "image": "/images/game_images/resized_appImage_Mario-Vs-Luigi.png",
+            "visits": 282,
+            "ranking": 26,
+            "description": ""
+        },
+        {
+            "name": "Super Mario 64",
+            "id": "Super-Mario-64",
+            "image": "/images/game_images/resized_appImage_Super-Mario-64.png",
+            "visits": 1051,
+            "ranking": 5,
+            "description": ""
+        },
+        {
+            "name": "2048",
+            "id": "2048",
+            "image": "/images/game_images/resized_appImage_2048.gif",
+            "visits": 234,
+            "ranking": 8,
+            "description": ""
+        },
+        {
+            "name": "Slope",
+            "id": "Slope",
+            "image": "/images/game_images/resized_appImage_Slope.png",
+            "visits": 2021,
+            "ranking": 4,
+            "description": ""
+        },
+        {
+            "name": "Thwack",
+            "id": "thwack",
+            "image": "/images/game_images/resized_appImage_thwack.png",
+            "visits": 234,
+            "ranking": 15,
+            "description": ""
+        },
+        {
+            "name": "Narrow One",
+            "id": "narrow-one",
+            "image": "/images/game_images/resized_appImage_narrow-one.png",
+            "visits": 238,
+            "ranking": 6,
+            "description": ""
+        },
+        {
+            "name": "Geometry Dash",
+            "id": "Geometry-Dash",
+            "image": "/images/game_images/resized_appImage_Geometry-Dash.png",
+            "visits": 382,
+            "ranking": 27,
+            "description": ""
+        },
+        {
+            "name": "Picohot",
+            "id": "picohot",
+            "image": "/images/game_images/resized_appImage_picohot.png",
+            "visits": 161,
+            "ranking": 18,
+            "description": ""
+        },
+        {
+            "name": "Cat Ninja",
+            "id": "Cat-Ninja",
+            "image": "/images/game_images/resized_appImage_Cat-Ninja.jpeg",
+            "visits": 267,
+            "ranking": 9,
+            "description": ""
+        },
+        {
+            "name": "Tanuki Sunset",
+            "id": "tanuki-sunset",
+            "image": "/images/game_images/resized_appImage_tanuki-sunset.webp",
+            "visits": 945,
+            "ranking": 10,
+            "description": ""
+        },
+        {
+            "name": "Clay Scape",
+            "id": "clay-scape",
+            "image": "/images/game_images/resized_appImage_clay-scape.png",
+            "visits": 247,
+            "ranking": 11,
+            "description": ""
+        },
+        {
+            "name": "Axis Football League",
+            "id": "Axis-Football-League",
+            "image": "/images/game_images/resized_appImage_Axis-Football-League.png",
+            "visits": 196,
+            "ranking": 12,
+            "description": ""
+        },
+        {
+            "name": "HexGL",
+            "id": "HexGL-master",
+            "image": "/images/game_images/resized_appImage_HexGL-master.jpeg",
+            "visits": 121,
+            "ranking": 13,
+            "description": ""
+        },
+        {
+            "name": "Cursed To Golf",
+            "id": "cursed-to-golf",
+            "image": "/images/game_images/resized_appImage_cursed-to-golf.jpeg",
+            "visits": 94,
+            "ranking": 14,
+            "description": ""
+        },
+        {
+            "name": "Ultraviolet",
+            "id": "Ultraviolet",
+            "image": "/images/game_images/resized_appImage_Ultraviolet.png",
+            "visits": 488,
+            "ranking": 15,
+            "description": ""
+        },
+        {
+            "name": "Chess",
+            "id": "chess",
+            "image": "/images/game_images/resized_appImage_chess.png",
+            "visits": 145,
+            "ranking": 16,
+            "description": ""
+        },
+        {
+            "name": "Drift Hunters",
+            "id": "drift-hunters",
+            "image": "/images/game_images/resized_appImage_drift-hunters.png",
+            "visits": 763,
+            "ranking": 29,
+            "description": ""
+        },
+        {
+            "name": "Minecraft",
+            "id": "Minecraft",
+            "image": "/images/game_images/resized_appImage_Minecraft.png",
+            "visits": 5221,
+            "ranking": 2,
+            "description": "",
+            "needsConstantFocus": true
+        },
+        {
+            "name": "Tenjutsu",
+            "id": "tenjutsu",
+            "image": "/images/game_images/resized_appImage_tenjutsu.png",
+            "visits": 144,
+            "ranking": 19,
+            "description": ""
+        },
+        {
+            "name": "Shell Shockers",
+            "id": "Shell-Shockers",
+            "image": "/images/game_images/resized_appImage_Shell-Shockers.jpeg",
+            "visits": 497,
+            "ranking": 2,
+            "description": ""
+        },
+        {
+            "name": "Retrobowl",
+            "id": "retrobowl",
+            "image": "/images/game_images/resized_appImage_retrobowl.jpeg",
+            "visits": 2436,
+            "ranking": 1,
+            "description": ""
+        },
+        {
+            "name": "Friday Night Funkin",
+            "id": "Friday-Night-Funkin",
+            "image": "/images/game_images/resized_appImage_Friday-Night-Funkin.jpg",
+            "visits": 293,
+            "ranking": 22,
+            "description": ""
+        },
+        {
+            "name": "Happy Wheels",
+            "id": "3245676432",
+            "image": "/images/game_images/happywheels.jpeg",
+            "visits": 1023,
+            "ranking": 1,
+            "description": ""
+        },
+        {
+            "name": "Basketball Stars",
+            "id": "basketball-stars",
+            "image": "/images/game_images/basketball-stars.jpeg",
+            "visits": 782,
+            "ranking": 5,
+            "description": "New!",
+            "gamedistribution": "69d78d071f704fa183d75b4114ae40ec"
+        },
+        {
+            "name": "Fruit Ninja",
+            "id": "fruit-ninja",
+            "image": "/images/game_images/fruit-ninja.jpeg",
+            "visits": 475,
+            "ranking": 5,
+            "description": "New!",
+            "gamedistribution": "2e0f4c7c23b041768bf7869a1ed89669"
+        },
+        {
+            "name": "VEX 3",
+            "id": "vex-3",
+            "image": "/images/game_images/vex-3.jpeg",
+            "visits": 676,
+            "ranking": 5,
+            "description": "New!",
+            "gamedistribution": "762c932b4db74c6da0c1d101b2da8be6"
+        },
+        {
+            "name": "Snowball Racing",
+            "id": "snowball-racing",
+            "image": "/images/game_images/snowball-racing.jpeg",
+            "visits": 527,
+            "ranking": 6,
+            "description": "New!",
+            "gamedistribution": "85d40b1334dd42fb8c9416e42fb46bb4"
+        },
+        {
+            "name": "Stick Duel: The War",
+            "id": "stick-duel-the-war",
+            "image": "/images/game_images/stick-duel-the-war.jpeg",
+            "visits": 534,
+            "ranking": 6,
+            "description": "New!",
+            "gamedistribution": "f6182cbcecbc49f0b6c3a7182e1a2186"
+        },
+        {"name":"Moto X3M Bike Race",
+        "id":"moto-x3m-bike-race",
+        "image":"/images/game_images/moto-x3m-bike-race.jpeg",
+        "visits": 2,
+        "ranking": 3,
+        "description": "New!",
+        "gamedistribution":"5b0abd4c0faa4f5eb190a9a16d5a1b4c"
+        }
+    ]
+}
