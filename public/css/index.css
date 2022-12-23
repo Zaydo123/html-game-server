@@ -10,8 +10,9 @@
 #fullscreenButton{
     margin: auto;
     display: block;
-    }
+}
 
 .homeAds{
-    padding:30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
