@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const sharp = require('sharp');
-
+const exec = require('child_process').exec;
 //all app images are 600x600 by default
 
 dotenv.config();
@@ -176,6 +176,21 @@ app.get('/requestapp',(req,res)=>{
         }
     });
     
+});
+
+
+app.post('/git-update',(req,res)=>{
+    if(req.body.secret == process.env.GIT_SECRET||req.body.secret == randomString(40,"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")){
+        console.log("Git update request received");
+        exec('git pull', (err, stdout, stderr) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(stdout);
+            }
+        });
+    }
+    res.send("OK");
 });
 
 
