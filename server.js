@@ -8,11 +8,21 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const sharp = require('sharp');
 const exec = require('child_process').exec;
-//all app images are 600x600 by default
+const sql = require('./database');
+const e = require('express');
+const { data } = require('jquery');
+const crypto = require('crypto');
+const githookVerifier = require('verify-github-webhook-secret');
 
+database = new sql();
+database.createTable();
 dotenv.config();
-let ignoredRoutes = ['visits','requestapp','admin'];
 let port = process.env.PORT || 3000;
+
+visitsBuffer = 5;
+visitsBufferCounter = 0;
+home_visits = 0;
+
 
 //random string generator
 function randomString(length, chars) {
@@ -34,12 +44,7 @@ if(fs.existsSync('./public/games.json')){
     console.log("games.json does not exist, creating...");
     fs.writeFileSync('./public/games.json', '{"main":{"apps":[],"visitors":0}}');
 }
-//requestapps.json
-if(fs.existsSync('./requestapps.json')){
-}else{
-    console.log("requestapps.json does not exist, creating...");
-    fs.writeFileSync('./requestapps.json', '{"requests":[]}');
-}
+
 //./public/visits.csv
 if(fs.existsSync('./public/visits.csv')){
 }else{
@@ -93,74 +98,54 @@ app.use(function(req, res, next) {
     
 //visitor counter middleware
 app.use(function (req, res, next) {
-    let filename = path.basename(req.url);
-    let extension = path.extname(filename);
-    if (extension === ''&& ignoredRoutes.indexOf(filename) == -1) {
-        //console.log('Request for ' + filename + ' received');
-        //open games.json file and update main.apps
-        fs.readFile('public/games.json', 'utf8', function readFileCallback(err, data){
-            if (err){
-                console.log(err);
-            } else {
-                try{
-                    obj = JSON.parse(data); //now it an object
-                    let found = false;
-                    if(filename==""){
-                        obj.home_visits++;
-                    } else{
-                        for(let i = 0; i < obj.games.length; i++){
-                            if(obj.games[i].id==filename){
-                                obj.games[i].visits++;
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
-                    json = JSON.stringify(obj); //convert it back to json
-                    fs.writeFileSync('public/games.json', json, 'utf8', (err)=>{
-                        if(err){
-                            console.log(err);
-                        }
-                    }); // write it back 
-                } catch{
-                    console.log('ERROR parsing in visits middleware');
-                }
-                //if cant find app in obj.games[index].route_name then add it
-            }
-        });
-            
+    if(req.path=="/"){
+        if(visitsBufferCounter>=visitsBuffer){
+            database.updateHomeVisits(process.env.URL,visitsBuffer);
+            visitsBufferCounter=0;
+        } else{
+            visitsBufferCounter++;
+        }
     }
     next();
 });
+
+
+
 app.use(express.static('public'));
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'ejs');
 
+
+let lastVisit = new Date();
+
 app.get('/', (req, res) => {
+    if(new Date()-lastVisit>1000*5){
+        updateGamesJson();
+        lastVisit = new Date();
+    }
     //res.sendFile(__dirname + '/index.html');
         //read games.json
         let apps =  JSON.parse(fs.readFileSync("public/games.json", "utf8"));
         apps.games.sort((a, b) => parseFloat(a.ranking) - parseFloat(b.ranking));
         res.render('index.ejs',{"appList":apps});
-        //open games.json
 });
 
 
 app.get('/app/:app', (req, res) => {
+
     let app = req.params.app;
-    fs.readFile('public/games.json', 'utf8', function readFileCallback(err, data){
-        if (err){
-            console.log(err);
-        } else {
-            let json=JSON.parse(data);
-            res.render('appPage.ejs',{'app':app,'visits':json.home_visits,'appList':json.games});
+    database.getGame(app, function(result){
+        if(result[0]){  
+            res.render('appPage.ejs',{'app':result[0],'visits':home_visits});
+            database.updateGame("visits",result[0].visits+1,app);
+        } else{
+            res.send("Sorry, this game does not exist. </br> <a href='/'>Go Home</a>");
+            return;
         }
     });
 
 });
-
-
 
 app.get('/visits',(req,res)=>{
     res.sendFile(__dirname + '/public/games.json');
@@ -179,42 +164,34 @@ app.get('/requestapp',(req,res)=>{
 });
 
 
-app.post('/git-update',(req,res)=>{
-    if(req.body.secret == process.env.GIT_SECRET||req.body.secret == randomString(40,"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")){
-        console.log("Git update request received");
-        exec('git pull', (err, stdout, stderr) => {
+app.post('/git-update',async (req,res)=>{
+    console.log("Git update request received");
+    const valid = await githookVerifier.verifySecret(req, process.env.GIT_SECRET);
+    if(valid){
+        // git stash then git pull
+        console.log("Git update request verified");
+        exec('git stash && git pull', (err, stdout, stderr) => {
             if (err) {
-                console.log(err);
-            } else {
-                console.log(stdout);
+                console.error(`exec error: ${err}`);
+                return;
             }
+            console.log(`stdout: ${stdout}`);
+            console.log(`stderr: ${stderr}`);
         });
+        res.status(200).send("Git update request verified");
+
+    } else {
+        res.status(403).send("Git update request not verified");
     }
-    res.send("OK");
 });
 
 
 //accept post request
 app.post('/requestapp',(req,res)=>{
-    //log data from form request
-    //append data to requestapps.json file
-    fs.readFile(__dirname + '/requestapps.json', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            let file = JSON.parse(data);
-            req.body.id = Date.now();
-            file.requests.push(req.body);
-            fs.writeFile(__dirname + '/requestapps.json', JSON.stringify(file), (err) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    //
-                }
-            });
-        }
-    });
-    //send response
+
+    let app = req.body;
+    let id = Date.now();
+    database.addRequest(app.name,app.email,app['App Name'],id);
     res.redirect('/');
 
 });
@@ -232,7 +209,6 @@ app.get('/rpitemps', function (req, res) {
     
 }
 );
-
 
 //admin page
 //every hour read games.json and write to visits.csv
@@ -253,16 +229,28 @@ setInterval(()=>{
     });
 },3600000);
 
-
-//every week delete contents of visits.csv and write header
+//every hour delete first line of visits.csv
 setInterval(()=>{
-    console.log('deleting visits.csv contents');
-    fs.writeFile(__dirname + '/public/visits.csv','visitors,date,time\n',(err)=>{
-        if(err){
+    fs.readFile(__dirname + '/public/visits.csv', (err, data) => {
+        if (err) {
             console.log(err);
+        } else {
+            console.log('reading visits.csv');
+            let file = data.toString();
+            let lines = file.split('\n');
+            lines.shift();
+            let newFile = lines.join('\n');
+            fs.writeFile(__dirname + '/public/visits.csv',newFile,(err)=>{
+                if(err){
+                    console.log(err);
+                }
+            }
+            );
         }
     });
-},604800000);
+} ,3600000);
+
+
 
 app.get('/admin',(req,res)=>{
     //open requestapps.json
@@ -270,21 +258,15 @@ app.get('/admin',(req,res)=>{
         res.render('admin.ejs',{'authorized':false});
     }
     if(req.cookies.admin == ADMIN_COOKIE){
-        fs.readFile(__dirname + '/requestapps.json', (err, data) => {
-            if (err) {
-                console.log(err);
-            } else {
-                let file = JSON.parse(data);
-                
-                fs.readFile(__dirname + '/public/games.json', (err, data) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        let apps = JSON.parse(data);
-                        res.render('admin.ejs',{'authorized':true,'apps':apps.games,'suggestions':file.requests});
-                    }
-                });
-            }
+        database.getRequests((result)=>{
+            fs.readFile(__dirname + '/public/games.json', (err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    let apps = JSON.parse(data);
+                    res.render('admin.ejs',{'authorized':true,'apps':apps.games,'suggestions':result});
+                }
+            });
         });
     }
 });
@@ -293,64 +275,46 @@ app.post('/admin/removesuggestion/:id',(req,res)=>{
     if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
         res.send('not authorized');
     } else{
-        //find item by id and remove it
-        fs.readFile(__dirname + '/requestapps.json', (err, data) => {
-            if (err) {
-                console.log(err);
-                res.send('error');
-            } else {
-                let file = JSON.parse(data);
-                for(let i = 0; i < file.requests.length; i++){
-                    if(file.requests[i].id == req.params.id){
-                        file.requests.splice(i,1);
-                        break;
-                    }
-                }
-                fs.writeFile(__dirname + '/requestapps.json', JSON.stringify(file), (err) => {
-                    if (err) {
-                        console.log(err);
-                        res.send('error');
-                    } else {
-                        res.send('success');
-                    }
-                });
-            }
-        });
+        database.deleteRequest(req.params.id);
     }
 });
 
-app.post('/admin/removevisits/:id',(req,res)=>{
-    if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
-        res.send('not authorized');
-    } else{
-        console.log('got rq '+req.params.id);
-        //open /public/games.json and delete main.apps entry
-        //find item by roue_name and remove it
-        fs.readFile(__dirname + '/public/games.json', (err, data) => {
-            if (err) {
+let safety = 0;
+function updateGamesJson(){
+    database.updateRankings();
+    database.getGames((dbResult)=>{
+        database.getHomeVisits(process.env.URL,(result)=>{
+            try{
+                home_visits = result[0].home_visits;
+            } catch (err){
                 console.log(err);
-                res.send('error');
-            } else {
-                let file = JSON.parse(data);
-                for(let i = 0; i < file.games.length; i++){
-                    if(file.games[i].id == req.params.id){
-                        file.games[i].visits = 0;
-                        break;
-                    }
+                home_visits = safety;
+                console.log("safety");
+            } finally{
+                let games = [];
+                for(let i = 0; i < dbResult.length; i++){
+                    let name = dbResult[i].name;
+                    let id = dbResult[i].id;
+                    let image = dbResult[i].image;
+                    let visits = dbResult[i].visits;
+                    let ranking = dbResult[i].ranking;
+                    let description = dbResult[i].description;
+                    let game = {'name':name,'id':id,'image':image,'visits':visits,'ranking':ranking,'description':description};
+                    games.push(game);
                 }
-                fs.writeFileSync(__dirname + '/public/games.json', JSON.stringify(file), (err) => {
+                let gamesJson = {"home_visits": home_visits,'games':games};
+                fs.writeFileSync(__dirname + '/public/games.json', JSON.stringify(gamesJson), (err) => {
                     if (err) {
                         console.log(err);
-                        res.send('error');
-                    } else {
-                        res.send('success');
                     }
                 });
             }
+            
         });
-    }
-});
+    });
+}
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
 });
+
