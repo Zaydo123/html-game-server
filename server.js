@@ -183,13 +183,15 @@ app.post('/git-update',async (req,res)=>{
             }
             console.log(`stdout: ${stdout}`);
             console.log(`stderr: ${stderr}`);
+
+            setTimeout(function(){
+                console.log("Waiting to restart server...");
+            },5000);
+            process.exit(0);
+
         });
         res.status(200).send("Git update request verified. Restarting server...");
         //wait 5 secs
-        setTimeout(function(){
-            console.log("Waiting to restart server...");
-        },5000);
-        process.exit(0);
 
     } else {
         res.status(403).send("Git update request not verified");
