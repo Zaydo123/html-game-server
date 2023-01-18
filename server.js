@@ -326,7 +326,7 @@ function updateGamesJson(){
 }
 
 app.get('/ping',(req,res)=>{
-    res.send('pong'+Date.now());
+    res.send('pong: '+ Date.now().toString());
 });
 
 app.listen(port, () => {
