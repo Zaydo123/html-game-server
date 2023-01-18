@@ -329,6 +329,10 @@ app.get('/ping',(req,res)=>{
     res.send('{pong: "'+ Date.now().toString()+'"}');
 });
 
+app.get('/testing',(req,res)=>{
+    res.send('testing');
+});
+
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
 });
