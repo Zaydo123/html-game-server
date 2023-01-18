@@ -171,7 +171,7 @@ app.post('/git-update',async (req,res)=>{
     const valid = await githookVerifier.verifySecret(req, process.env.GIT_SECRET);
     if(valid){
         // git stash then git pull
-        console.log("Git update request verifie. RESTARTING SERVER...");
+        console.log("Git update request verified. RESTARTING SERVER...");
 
         //git reset --hard HEAD
         //git pull
@@ -185,6 +185,10 @@ app.post('/git-update',async (req,res)=>{
             console.log(`stderr: ${stderr}`);
         });
         res.status(200).send("Git update request verified. Restarting server...");
+        //wait 5 secs
+        setTimeout(function(){
+            console.log("Waiting to restart server...");
+        },5000);
         process.exit(0);
 
     } else {
