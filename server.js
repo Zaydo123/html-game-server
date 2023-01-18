@@ -322,7 +322,7 @@ function updateGamesJson(){
 }
 
 app.get('/ping',(req,res)=>{
-    res.send('pong lmao');
+    res.send('pong');
 });
 
 app.listen(port, () => {
