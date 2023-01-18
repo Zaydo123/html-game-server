@@ -172,7 +172,11 @@ app.post('/git-update',async (req,res)=>{
     if(valid){
         // git stash then git pull
         console.log("Git update request verifie. RESTARTING SERVER...");
-        exec('git stash && git pull', (err, stdout, stderr) => {
+
+        //git reset --hard HEAD
+        //git pull
+
+        exec('git reset --hard HEAD && git pull ', (err, stdout, stderr) => {
             if (err) {
                 console.error(`exec error: ${err}`);
                 return;
