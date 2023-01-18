@@ -13,6 +13,8 @@ const e = require('express');
 const { data } = require('jquery');
 const crypto = require('crypto');
 const githookVerifier = require('verify-github-webhook-secret');
+const process = require('process');
+
 
 database = new sql();
 database.createTable();
@@ -169,7 +171,7 @@ app.post('/git-update',async (req,res)=>{
     const valid = await githookVerifier.verifySecret(req, process.env.GIT_SECRET);
     if(valid){
         // git stash then git pull
-        console.log("Git update request verified");
+        console.log("Git update request verifie. RESTARTING SERVER...");
         exec('git stash && git pull', (err, stdout, stderr) => {
             if (err) {
                 console.error(`exec error: ${err}`);
@@ -178,7 +180,8 @@ app.post('/git-update',async (req,res)=>{
             console.log(`stdout: ${stdout}`);
             console.log(`stderr: ${stderr}`);
         });
-        res.status(200).send("Git update request verified");
+        res.status(200).send("Git update request verified. Restarting server...");
+        process.exit(0);
 
     } else {
         res.status(403).send("Git update request not verified");

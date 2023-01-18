@@ -14,6 +14,8 @@ The index.ejs file in the /views directory is editable to customize the website 
 
 <h5>Live app at https://physics-central.com</h5>
 
+I RECCOMEND RUNNING with https://github.com/foreversd/forever because the website MIGHT close itself to update.
+
 ## .env file config example MANDATORY
 ```
 # Webserver Port
