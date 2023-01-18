@@ -14,6 +14,14 @@ const { data } = require('jquery');
 const crypto = require('crypto');
 const githookVerifier = require('verify-github-webhook-secret');
 const process = require('process');
+let http = require('http');
+let https = require('https');
+
+let mirrors;
+checkMirrors();
+let lastChecked = new Date();
+
+
 
 
 database = new sql();
@@ -53,6 +61,19 @@ if(fs.existsSync('./public/visits.csv')){
     console.log("visits.csv does not exist, creating...");
     fs.writeFileSync('./public/visits.csv', 'visitors,date,time\n');
 }
+
+if(fs.existsSync('./public/mirrors.json')){
+}else{
+    console.log("mirrors.json does not exist, creating...");
+    fs.writeFileSync('./public/mirrors.json', '[{"name":"Physics Central","url":"https://physics-central.com","official":true,"author":"Zayd","github":"https://github.com/Zaydo123/html-game-server","status":"Offline"},{"name":"Venture X Jewelry","url":"http://venturexjewelry.com","official":true,"author":"Zayd","status":"Online"},{"name":"Algebra Tools","url":"https://algebratools.com","official":true,"author":"Zayd","status":"Online"}]');
+}
+
+/*
+[{"name":"Physics Central","url":"https://physics-central.com","official":true,"author":"Zayd","github":"https://github.com/Zaydo123/html-game-server","status":"Offline"},{"name":"Venture X Jewelry","url":"http://venturexjewelry.com","official":true,"author":"Zayd","status":"Online"},{"name":"Algebra Tools","url":"https://algebratools.com","official":true,"author":"Zayd","status":"Online"}]
+
+
+*/
+
 
 //middleware to parse user agent and block accordingly
 app.use(function(req, res, next) {
@@ -325,12 +346,75 @@ function updateGamesJson(){
     });
 }
 
+
+
+function checkMirrors(){
+    fs.readFile(__dirname + '/public/mirrors.json', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            mirrors = JSON.parse(data);
+            let temp;
+            for(let i = 0; i < mirrors.length; i++){
+                let siteStatus;
+                if(mirrors[i].url.indexOf('https')<0){
+                    temp = https;
+                    https = http;
+                }
+        
+                https.request(mirrors[i].url+'/games.json', { method: 'HEAD' }, (res) => {
+        
+        
+                    if(res.statusCode>=200 && res.statusCode<400){
+                        siteStatus = "Online";
+        
+                    } else{
+                        siteStatus = "Offline";
+                    }
+        
+                    mirrors[i].status = siteStatus;        
+        
+                }).on('error', (err) => {
+                    console.error(err);
+        
+                    siteStatus = "Offline";
+                    mirrors[i].status = siteStatus;
+        
+                }).end();
+                
+        
+                if(temp){
+                    https = temp;
+                }
+            
+            }
+        }
+        fs.writeFile(__dirname + '/public/mirrors.json', JSON.stringify(mirrors), (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Mirrors updated');
+            }
+        });
+
+    });
+
+}
+
 app.get('/ping',(req,res)=>{
     res.send('{pong: "'+ Date.now().toString()+'"}');
 });
 
 app.get('/testing',(req,res)=>{
     res.send('testing');
+});
+
+app.get('/mirrors',(req,res)=>{
+    res.render('mirrors.ejs',{'mirrors':mirrors})
+    if((new Date() - lastChecked) > 1000*60*10){
+        checkMirrors();
+        lastChecked = new Date();
+    }
 });
 
 app.listen(port, () => {
