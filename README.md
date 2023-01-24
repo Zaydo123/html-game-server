@@ -1,5 +1,7 @@
 # html5-game-server
 
+![](https://tokei.rs/b1/github/Zaydo123/html-game-server?category=code) ![](https://tokei.rs/b1/github/Zaydo123/html-game-server?category=files)                                                                                                                                                                                                                                              
+
 This is a quick and simple WebGL/Html5 game server. 
 The index.ejs file in the /views directory is editable to customize the website home page.
 
