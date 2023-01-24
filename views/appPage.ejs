@@ -52,15 +52,6 @@
         </div>
       </div>
     </nav>
-    <div hidden="true" id="announcement" style="text-align:center;padding-top: 10px;"><h6>Maintaining this site has become increasingly more expensive as time has gone on. But it's time to add ads. Thanks for understanding.</h6></div>
-    <script>
-      //on click annoucement hide it
-      document.getElementById("announcement").addEventListener("click", function(){
-        document.getElementById("announcement").style.display = "none";
-      });
-    </script>
-    
-    
     <hr />
     <div class="gamearea">
       <div class="ADS" id="AD-LEFT">
@@ -88,32 +79,15 @@
         </script>
       </div>
 
-      <style>
-        #AD-LEFT{
-
-          float: left;
-          position: relative;
-          height: fit-content;
-          width:fit-content;
-        }
-        #AD-RIGHT{
-
-          float: right;
-          position: relative;
-          height: fit-content;
-          width:fit-content;
-        }
-      
-
-      </style>
 
       <!------------------------------------------------------------------------------------------->
 
-          <%if(app.gamedistribution!="NULL"){%>
+          <%if(app.gamedistribution!="NULL"&&app.gamedistribution!=""&&app.gamedistribution!=null){%>
           <script>console.log("game using gamedistribution iframe")</script>
           <iframe id="app-iframe" src="https://html5.gamedistribution.com/<%=app.gamedistribution%>/?gd_sdk_referrer_url=https://www.physics-central.com/app/<%=app.id%>" width="920" height="480" scrolling="none" frameborder="0"></iframe>
           <%}else{%>
             <iframe id="app-iframe" height="500" width="950" src="https://venturebucket.s3.us-east-2.amazonaws.com/games/<%=app.id%>/index.html"></iframe>
+
             <script>
               //every 5 seconds check if the iframe is focused
 
@@ -156,8 +130,25 @@
     <!--<iframe id="app-iframe" height="800" width="1000" onclick="focusIframe()" src=""></iframe>-->
     
 
-    <button id="fullscreenButton" onclick="openFullscreen('app-iframe')" style="margin: auto;" scrolling="no">Fullscreen</button>
-
+    <div class="game-controls">
+      <button id="fullscreenButton" onclick="openFullscreen('app-iframe')" style="margin: auto;" scrolling="no">Fullscreen</button>
+      <%if(app.mirrors!="NULL"&&app.mirrors!=[]&&app.mirrors.length>0){%>
+          <select class="mirrors" onchange='changeMirror()'>
+            <%for(let i = 0; i < app.mirrors.length; i++){%>
+              <%let mirror = app.mirrors[i];%>
+                <option value="<%=mirror.url%>"><%=mirror.name%></option>
+            <%}%>
+          </select>
+          
+          <%}%>
+    </div>
+    
+    <script>
+      function changeMirror(){
+        let url = document.getElementsByClassName("mirrors")[0].value;
+        document.getElementById("app-iframe").src=url;
+      }
+    </script>
     <hr />
 
     <footer>

@@ -7,12 +7,39 @@
     display:block;
     border: none;
 }
-#fullscreenButton{
-    margin: auto;
-    display: block;
+
+.game-controls{
+    /*center both items in game-controls*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 .homeAds{
-    padding-top: 20px;
-    padding-bottom: 20px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border: 3px solid rgb(148, 148, 148);
+    background-color: rgb(245, 253, 255);
+}
+
+.disable-adblock{
+    text-align: center;
+    position: relative;
+    top: 145px;
+}
+
+#AD-LEFT{
+
+  float: left;
+  position: relative;
+  height: fit-content;
+  width:fit-content;
+}
+#AD-RIGHT{
+
+  float: right;
+  position: relative;
+  height: fit-content;
+  width:fit-content;
 }

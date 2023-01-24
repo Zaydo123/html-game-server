@@ -160,6 +160,21 @@ app.get('/app/:app', (req, res) => {
     let app = req.params.app;
     database.getGame(app, function(result){
         if(result[0]){  
+            if(result[0].mirrors==null||result[0].mirrors==undefined||result[0].mirrors==""){
+                result[0].mirrors={};
+            } else{
+                //insert default mirrror at index 0 without overwriting
+                let oldMirrors = result[0].mirrors;
+                oldMirrors = JSON.parse(result[0].mirrors);
+                let newMirrors = [];
+                newMirrors.push({"name":"Main","url":"https://venturebucket.s3.us-east-2.amazonaws.com/games/"+result[0].id+"/index.html"});
+                for(let i=0;i<oldMirrors.length;i++){
+                    newMirrors.push(oldMirrors[i]);
+                }
+                result[0].mirrors=newMirrors;
+
+            }
+
             res.render('appPage.ejs',{'app':result[0],'visits':home_visits});
             database.updateGame("visits",result[0].visits+1,app);
         } else{

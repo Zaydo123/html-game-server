@@ -24,7 +24,7 @@ class Database {
         });
     }
     createTable() {
-        let sql = 'CREATE TABLE IF NOT EXISTS games (name text NOT NULL, id text NOT NULL, image text, visits int(11) NOT NULL, ranking int(11) NOT NULL, description text,gamedistribution text, needsConstantFocus boolean);\n';
+        let sql = "CREATE TABLE IF NOT EXISTS games (name text NOT NULL,id text NOT NULL,image text DEFAULT NULL,visits int(11) NOT NULL,ranking int(11) NOT NULL,description text DEFAULT NULL,gamedistribution text DEFAULT NULL,needsConstantFocus tinyint(1) DEFAULT NULL,mirrors longtext DEFAULT NULL)"
         let sql2 = 'CREATE TABLE IF NOT EXISTS visits (url text NOT NULL, home_visits int(11) NOT NULL, UNIQUE KEY url (url));';
         let sql3 = 'CREATE TABLE IF NOT EXISTS requests (name text NOT NULL, email text NOT NULL, appname text NOT NULL, id text NOT NULL, UNIQUE KEY id (id));';
         //execute all sql statements
