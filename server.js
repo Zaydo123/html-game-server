@@ -212,7 +212,7 @@ app.post('/git-update',async (req,res)=>{
         //git reset --hard HEAD
         //git pull
 
-        exec('git pull', (err, stdout, stderr) => {
+        exec('git reset --hard origin/master', (err, stdout, stderr) => {
             if (err) {
                 console.error(`exec error: ${err}`);
                 return;
