@@ -229,7 +229,7 @@ app.post('/git-update',async (req,res)=>{
             });
         });
 
-
+        //this is bullcrap
 
         res.status(200).send("Git update request verified. Restarting server...");
         //wait 5 secs
