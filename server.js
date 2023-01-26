@@ -219,17 +219,18 @@ app.post('/git-update',async (req,res)=>{
             }
             console.log(`stdout: ${stdout}`);
             console.log(`stderr: ${stderr}`);
+            exec('git reset --hard origin/master', (err, stdout, stderr) => {
+                if (err) {
+                    console.error(`exec error: ${err}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+            });
         });
 
 
-        exec('git reset --hard origin/master', (err, stdout, stderr) => {
-            if (err) {
-                console.error(`exec error: ${err}`);
-                return;
-            }
-            console.log(`stdout: ${stdout}`);
-            console.log(`stderr: ${stderr}`);
-        });
+
         res.status(200).send("Git update request verified. Restarting server...");
         //wait 5 secs
         setTimeout(function(){
