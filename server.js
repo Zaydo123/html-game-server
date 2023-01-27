@@ -175,7 +175,7 @@ app.get('/app/:app', (req, res) => {
 
             }
 
-            res.render('appPage.ejs',{'app':result[0],'visits':result[0].visits});
+            res.render('appPage.ejs',{'app':result[0],'visits':0);
             database.updateGame("visits",result[0].visits+1,app);
         } else{
             res.send("Sorry, this game does not exist. </br> <a href='/'>Go Home</a>");
