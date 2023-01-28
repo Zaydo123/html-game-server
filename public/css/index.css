@@ -8,12 +8,49 @@
     border: none;
 }
 
+
+
 .game-controls{
     /*center both items in game-controls*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+    display: block;
+    text-align: center;
+    margin: 10px auto;
+    /*now style the button in game-controls div*/
+
+}
+
+.game-controls button{
+    /*center the button in game-controls*/
+    display: block;
+    margin: 0 auto;
+    /*now style the button in game-controls div*/
+    background-color: #001639; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.game-controls select {
+    /*center the button in game-controls*/
+    display: block;
+    margin: 0 auto;
+    /*now style the button in game-controls div*/
+    background-color: #001639; /* Green */
+    border: none;
+    color: white;
+    padding: 11px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
 .homeAds{

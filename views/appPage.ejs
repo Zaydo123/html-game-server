@@ -131,7 +131,7 @@
     
 
     <div class="game-controls">
-      <button id="fullscreenButton" onclick="openFullscreen('app-iframe')" style="margin: auto;" scrolling="no">Fullscreen</button>
+      <button id="fullscreenButton" onclick="openFullscreen('app-iframe')">Fullscreen</button>
       <%if(app.mirrors!="NULL"&&app.mirrors!=[]&&app.mirrors.length>0){%>
           <select class="mirrors" onchange='changeMirror()'>
             <%for(let i = 0; i < app.mirrors.length; i++){%>
