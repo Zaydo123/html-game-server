@@ -10,6 +10,8 @@
     <link href="/css/index.css" rel="stylesheet" />
     <link rel="manifest" href="/manifest.json" />
     <script src="/fullScreen.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
+     crossorigin="anonymous"></script>
     
   </head>
   <body>
@@ -45,81 +47,108 @@
             </li>
           </ul>
         </div>
-        <div class="total-visits">
+        <div hidden="true" class="total-visits">
           <a class="nav" style="color: white; font-size: large">Total Visits: <%=visits%></a>
         </div>
       </div>
     </nav>
-    <div id="announcement" style="text-align:center;padding-top: 10px;"><h6>Maintaining this site has become increasingly more expensive as time has gone on. But it's time to add ads. Thanks for understanding.</h6></div>
     <hr />
     <div class="gamearea">
       <div class="ADS" id="AD-LEFT">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361"
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
         crossorigin="anonymous"></script>
-   <!-- leftIframe -->
-   <ins class="adsbygoogle"
-        style="display:inline-block;width:240px;height:480px"
-        data-ad-client="ca-pub-7596539695738361"
-        data-ad-slot="1642411896"></ins>
-   <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-   </script>
+        <!-- leftIframe -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:140px;height:280px"
+             data-ad-client="ca-pub-3855909962178868"
+             data-ad-slot="4563054865"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
       </div>
       <div class="ADS" id="AD-RIGHT">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361"
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
         crossorigin="anonymous"></script>
-   <!-- iframeright -->
-   <ins class="adsbygoogle"
-        style="display:inline-block;width:240px;height:480px"
-        data-ad-client="ca-pub-7596539695738361"
-        data-ad-slot="9249439172"></ins>
-   <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-   </script>
+        <!-- iframeright -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:140px;height:280px"
+             data-ad-client="ca-pub-3855909962178868"
+             data-ad-slot="4585986036"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
       </div>
 
-      <style>
-        #AD-LEFT{
-          padding-top: 3%;
-          padding-left: 4%;
-          float: left;
-          position: relative;
-          height: fit-content;
-          width:fit-content;
-        }
-        #AD-RIGHT{
-          padding-top: 3%;
-          padding-right: 4%;
-          float: right;
-          position: relative;
-          height: fit-content;
-          width:fit-content;
-        }
-      
-
-      </style>
 
       <!------------------------------------------------------------------------------------------->
-      <iframe id="app-iframe" height="500" width="1000" src="https://physicsbucket.s3.us-east-2.amazonaws.com/games/<%=app%>/index.html"></iframe>
 
+          <%if(app.gamedistribution!="NULL"&&app.gamedistribution!=""&&app.gamedistribution!=null){%>
+          <script>console.log("game using gamedistribution iframe")</script>
+          <iframe id="app-iframe" src="https://html5.gamedistribution.com/<%=app.gamedistribution%>/?gd_sdk_referrer_url=https://www.physics-central.com/app/<%=app.id%>" width="920" height="480" scrolling="none" frameborder="0"></iframe>
+          <%}else{%>
+            <iframe id="app-iframe" height="500" width="950" src="https://venturebucket.s3.us-east-2.amazonaws.com/games/<%=app.id%>/index.html"></iframe>
+
+            <script>
+              //every 5 seconds check if the iframe is focused
+
+              //on iframe click focus it
+              document.getElementById("app-iframe").addEventListener("click", function(){
+                focusIframe(); 
+              });
+              function focusIframe(){
+                let frame = document.getElementById('app-iframe');
+                frame.focus(); 
+                //disable scrolling
+                frame.contentWindow.document.body.style.overflow = 'hidden';  
+                return frame
+              }
+
+              let myIframe = focusIframe();
+              myIframe = myIframe.contentWindow
+              myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
+              let needsConstantFocus;
+              <%if(app.needsConstantFocus==1){%>
+                needsConstantFocus = true;
+              <%}else{%>
+                needsConstantFocus = false;
+              <%}%>
+
+              if(needsConstantFocus){
+                console.log("game needs constant focus");
+                setInterval(function() {
+                  myIframe.focus(); 
+                }, 5000);
+              } else{
+                console.log("game does not need constant focus");
+              }
+
+            </script>
+          <%}%>
 
 
     </div>
     <!--<iframe id="app-iframe" height="800" width="1000" onclick="focusIframe()" src=""></iframe>-->
     
-    <script>
-        //every 5 seconds check if the iframe is focused
-        let myIframe = document.getElementById('app-iframe');
-        myIframe.focus(); 
-        myIframe = myIframe.contentWindow
-        myIframe.addEventListener("keydown", function(evt) { myIframe.myKeydownEventHandler(evt); });
-        //every 10 seconds
-        setInterval(function() {
-            myIframe.focus(); 
-        }, 10000);
-    </script>
-    <button id="fullscreenButton" onclick="openFullscreen('app-iframe')" style="margin: auto;" scrolling="no">Fullscreen</button>
 
+    <div class="game-controls">
+      <button id="fullscreenButton" onclick="openFullscreen('app-iframe')">Fullscreen</button>
+      <%if(app.mirrors!="NULL"&&app.mirrors!=[]&&app.mirrors.length>0){%>
+          <select class="mirrors" onchange='changeMirror()'>
+            <%for(let i = 0; i < app.mirrors.length; i++){%>
+              <%let mirror = app.mirrors[i];%>
+                <option value="<%=mirror.url%>"><%=mirror.name%></option>
+            <%}%>
+          </select>
+          
+          <%}%>
+    </div>
+    
+    <script>
+      function changeMirror(){
+        let url = document.getElementsByClassName("mirrors")[0].value;
+        document.getElementById("app-iframe").src=url;
+      }
+    </script>
     <hr />
 
     <footer>
@@ -151,16 +180,16 @@
         </div>
       </div>
       <div align="center" class="ADS-footer" id="footer">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361" crossorigin="anonymous"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
+             crossorigin="anonymous"></script>
         <!-- footer -->
         <ins class="adsbygoogle"
              style="display:inline-block;width:728px;height:90px"
-             data-ad-client="ca-pub-7596539695738361"
-             data-ad-slot="7640792773"></ins>
+             data-ad-client="ca-pub-3855909962178868"
+             data-ad-slot="2510487036"></ins>
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-
       </div>
     </footer>
     <!-- BootstrapJS -->

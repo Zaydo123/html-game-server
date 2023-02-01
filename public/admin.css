@@ -2,7 +2,7 @@ body{
     background-color: #ff8a66;
 }
 
-.suggestions,.visits,.ips{
+.suggestions,.visits{
     background-color: #ff8a66;
     width: 100%;
     height: 100%;
@@ -10,10 +10,6 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.suggestion>p,.visits>p,.ips>p{
-    padding: 1rem;
 }
 
 table {

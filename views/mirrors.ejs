@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Physics Central Mirrors</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+
+        <div class="titles">
+            <div class="title">
+                <h1>Physics Central Mirrors
+               <span class="subtext-title">By Zayd</span>
+            
+                </h1>
+            </div>
+        </div>
+
+
+            <div class="card-container">
+                <% for(let i=0; i<mirrors.length; i++){ %>    
+                <div class="card" onclick="redirect('<%=mirrors[i].url%>')">
+                    <div class="card-title">
+                        <h3 id="name-<%=mirrors[i].url%>"><%=mirrors[i].name%>
+                            <%if(mirrors[i].official){%>
+                                <span id="Official-<%=mirrors[i].official%>">Official</span>
+                            <%} else{%>
+                                <span id="Unofficial-<%=mirrors[i].official%>">Hosted by <%=mirrors[i].author%></span>
+                            <%}%>
+                            </h3>
+                    </div>
+
+                    <div class="bottom-row">
+                        <div class="site-status">
+                            <%if(mirrors[i].status == "Online"){%>
+                                <span id="online-bubble-<%=mirrors[i].url%>" class="online-bubble"></span> 
+                            <%} else{%>
+                                <span id="offline-bubble-<%=mirrors[i].url%>" class="online-bubble"></span> 
+                            <%}%>
+                                <p id="online-<%=mirrors[i].url%>"><%=mirrors[i].status%></p>
+                        </div>
+
+                        <%if(mirrors[i].github){%>
+                            <div class="github">
+                                <a href="<%=mirrors[i].github%>">
+                                   <img src="/github-mark-white.svg" alt="Github"/>
+                                </a>
+                            </div>
+                        <%}%>
+
+                    </div>
+
+                </div>
+                </br>
+                <%}%>
+            </div>
+
+    
+    </body>
+    <script>
+        function redirect(url){
+            window.location.href=url;
+        }
+    </script>
+    <style>
+    body{
+        background: #ffffff;
+        font-family: 'Roboto', sans-serif;
+        font-size: 1em;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    .titles {
+        text-align: center;
+        background-color: #1f79a7;
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+    .titles h1 {
+        display: inline-block;
+    }
+
+    .subtext-title{
+        font-size: .5em;
+        font-weight: 700;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        padding-bottom: 10px;
+        color:rgb(202, 173, 173);
+    }
+
+    .card-container{
+        display: flex;
+        flex-direction: row;
+        margin: 0 auto;
+        min-width: fit-content;
+        width: 90%;
+        padding: 25px;
+        flex-wrap: wrap ;
+        column-gap: 10px;
+        row-gap: 30px;
+        justify-content: center;
+    }
+
+    .card{
+        border-radius: 12px;
+        background: #3a9aca;
+        box-shadow:  3px 5px 1px #1f79a7,
+                 -3px -5px 1px #3a9aca;
+        min-width: 20%;
+        padding: 10px;
+        padding-left: 20px;
+        transition: linear .1s;
+    }
+
+    .card-title{
+        text-align: left;
+    }
+    .card-title h3{
+        font-size: 1.6em;
+        display: inline-block;
+        padding-top:10px;
+
+    }
+
+    .card-title h3 span:first-child {
+        font-size: .6em;
+        font-weight: 700;
+        display: block;
+        text-align: left
+    }
+
+    .card:hover{
+        translate: 0px -5px;
+        scale:1.05;
+    }
+
+    .site-status{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+
+    .bottom-row{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between
+    }
+
+    .bottom-row p{
+        padding-left: 5px;
+        font-size: 1em;
+    }
+
+    .bottom-row img{
+        width: 50px;
+    }
+
+    .online-bubble{
+        height:15px;
+        width:15px;
+        border-radius: 50%;
+        background-color: aliceblue;
+    }
+
+    span[id*='Official']{
+        color:gainsboro;
+    }
+    span[id*='Unofficial']{
+        color:firebrick;
+    }
+
+    span[id*='online-bubble']{
+        background-color:greenyellow;
+    }
+    span[id*='offline-bubble']{
+        background-color:rebeccapurple;
+    }
+    </style>
+</html>

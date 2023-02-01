@@ -7,10 +7,32 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const sharp = require('sharp');
+const exec = require('child_process').exec;
+const sql = require('./database');
+const e = require('express');
+const { data } = require('jquery');
+const crypto = require('crypto');
+const githookVerifier = require('verify-github-webhook-secret');
+const process = require('process');
+let http = require('http');
+let https = require('https');
 
+let mirrors;
+checkMirrors();
+let lastChecked = new Date();
+
+
+
+
+database = new sql();
+database.createTable();
 dotenv.config();
-let ignoredRoutes = ['','visits','requestapp','admin'];
 let port = process.env.PORT || 3000;
+
+visitsBuffer = 5;
+visitsBufferCounter = 0;
+home_visits = 0;
+
 
 //random string generator
 function randomString(length, chars) {
@@ -20,31 +42,38 @@ function randomString(length, chars) {
 }
 
 let admin_creds = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-console.log("Admin Credentials (if not specified in .env file): "+admin_creds);
 const ADMIN_COOKIE = process.env.ADMIN_COOKIE || admin_creds;
 
 //see which static files most popular and how many times they are requested
 
 //make json files if not exist on startup 
 
-//visits.json
-if(fs.existsSync('./public/visits.json')){
+//games.json
+if(fs.existsSync('./public/games.json')){
 }else{
-    console.log("visits.json does not exist, creating...");
-    fs.writeFileSync('./public/visits.json', '{"main":{"apps":[],"visitors":0}}');
+    console.log("games.json does not exist, creating...");
+    fs.writeFileSync('./public/games.json', '{"main":{"apps":[],"visitors":0}}');
 }
-//requestapps.json
-if(fs.existsSync('./requestapps.json')){
-}else{
-    console.log("requestapps.json does not exist, creating...");
-    fs.writeFileSync('./requestapps.json', '{"requests":[]}');
-}
+
 //./public/visits.csv
 if(fs.existsSync('./public/visits.csv')){
 }else{
     console.log("visits.csv does not exist, creating...");
     fs.writeFileSync('./public/visits.csv', 'visitors,date,time\n');
 }
+
+if(fs.existsSync('./public/mirrors.json')){
+}else{
+    console.log("mirrors.json does not exist, creating...");
+    fs.writeFileSync('./public/mirrors.json', '[{"name":"Physics Central","url":"https://physics-central.com","official":true,"author":"Zayd","github":"https://github.com/Zaydo123/html-game-server","status":"Offline"},{"name":"Venture X Jewelry","url":"http://venturexjewelry.com","official":true,"author":"Zayd","status":"Online"},{"name":"Algebra Tools","url":"https://algebratools.com","official":true,"author":"Zayd","status":"Online"}]');
+}
+
+/*
+[{"name":"Physics Central","url":"https://physics-central.com","official":true,"author":"Zayd","github":"https://github.com/Zaydo123/html-game-server","status":"Offline"},{"name":"Venture X Jewelry","url":"http://venturexjewelry.com","official":true,"author":"Zayd","status":"Online"},{"name":"Algebra Tools","url":"https://algebratools.com","official":true,"author":"Zayd","status":"Online"}]
+
+
+*/
+
 
 //middleware to parse user agent and block accordingly
 app.use(function(req, res, next) {
@@ -92,226 +121,135 @@ app.use(function(req, res, next) {
     
 //visitor counter middleware
 app.use(function (req, res, next) {
-    let filename = path.basename(req.url);
-    let extension = path.extname(filename);
-    if (extension === ''&& ignoredRoutes.indexOf(filename) == -1) {
-        //console.log('Request for ' + filename + ' received');
-        //open visits.json file and update main.apps
-        fs.readFile('public/visits.json', 'utf8', function readFileCallback(err, data){
-            if (err){
-                console.log(err);
-            } else {
-                try{
-                    obj = JSON.parse(data); //now it an object
-                    let found = false;
-                    for(let i = 0; i < obj.main.apps.length; i++){
-                        if(obj.main.apps[i].route_name == filename){
-                            obj.main.apps[i].visits++;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if(!found){
-                        obj.main.apps.push({route_name:filename,description:"",image:"",visits:1});
-                    }
-    
-                    json = JSON.stringify(obj); //convert it back to json
-                    fs.writeFile('public/visits.json', json, 'utf8', (err)=>{
-                        if(err){
-                            console.log(err);
-                        }
-                    }); // write it back 
-                } catch{
-                    console.log('ERROR parsing in visits middleware');
-                }
-                //if cant find app in obj.main.apps[index].route_name then add it
-            }
-        });
-            
+    if(req.path=="/"){
+        if(visitsBufferCounter>=visitsBuffer){
+            database.updateHomeVisits(process.env.URL,visitsBuffer);
+            visitsBufferCounter=0;
+        } else{
+            visitsBufferCounter++;
+        }
     }
     next();
 });
+
+
+
 app.use(express.static('public'));
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'ejs');
 
 
-//look if appImage exists in public/games/appName/
-function appImageEdit(appName){
-    let appImage = false;
-    let dirs = fs.readdirSync('./public/games/'+appName);
-    //dont continue if resized image already exists
-    for(let i = 0; i < dirs.length; i++){
-        if(dirs[i].includes("resized")){
-            appImage = true;
-        }
-    }
-    dirs.forEach(file => {
-        if((file.indexOf('resized_appImage.')==-1)&&(file.indexOf('appImage.') != -1)&&(appImage == false)){
-            appImage = false;
-            sharp('./public/games/'+appName+'/'+file)
-            .resize(600,600)
-            .toFile('./public/games/'+appName+'/'+'resized_'+file, (err, info) => {
-                if(err){
-                    console.log(err);
-                } else {
-                    console.log('resizing '+file+' to '+info.width+'x'+info.height);
-                }
-            });
-
-        }
-    });
-    return appImage;
-}
-
-//open all directories in public/app
-fs.readdirSync('./public/games').forEach(file => {
-    if(file[0] != '.'){
-        appImageEdit(file);
-    }
-});
-
-
-
-//function that reads visits.json and returns the json object
-function getVisits(){
-    return new Promise((resolve,reject)=>{
-        fs.readFile('public/visits.json', 'utf8', function readFileCallback(err, data){
-            if (err){
-                console.log(err);
-            } else {
-                resolve(JSON.parse(data));
-            }
-        });
-    }
-    );  
-}
+let lastVisit = new Date();
 
 app.get('/', (req, res) => {
+    if(new Date()-lastVisit>1000*5){
+        updateGamesJson();
+        lastVisit = new Date();
+    }
     //res.sendFile(__dirname + '/index.html');
-    fs.readdir(__dirname + '/public/games', (err, files) => {
-        if (err) {
-            console.log(err);
-            res.send('error')
-        } else {
-            //turn files into a dictionary
-            let apps = {'apps':[]};
-            for (let i = 0; i < files.length; i++) {
-                let file = files[i];
-                let app_name = file.split('.')[0];
-                //replace hyphens with spaces
-                while(app_name.indexOf('-') != -1){
-                    app_name = app_name.replace('-',' ');
-                }
-                //capitalize first letter of each word
-                app_name = app_name.charAt(0).toUpperCase() + app_name.slice(1);
-                let appInfo = {'id':files[i],'name': app_name,'description':"",photos:[]};
-                //get photos and videos
-                //see if folder has resized_appImage.jpg or resized_appImage.png
-                if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.jpg')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.jpg');
-                }else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.png')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.png');
-                }else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.gif')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.gif');
-                } else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.jpeg')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.jpeg');
-                } else if(fs.existsSync(__dirname + '/public/games/'+file+'/resized_appImage.webp')){
-                    appInfo.photos.push('/games/'+file+'/resized_appImage.webp');
-                }
-
-                //if description.txt exists, add it to appInfo
-                if(fs.existsSync(__dirname + '/public/games/'+file+'/description.txt')){
-                    appInfo.description = fs.readFileSync(__dirname + '/public/games/'+file+'/description.txt', 'utf8');
-                }
-                //append app info to apps.apps
-                if(files[i] != '.DS_Store'){
-                    apps.apps.push(appInfo);
-                }   
-            }
-            //read visits then send to index.ejs
-
-            //add 1 to visits
-            fs.readFile(__dirname + '/public/visits.json', (err, data) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    let file = JSON.parse(data);
-                    file.main.visitors++
-                    fs.writeFile(__dirname + '/public/visits.json', JSON.stringify(file), (err) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            getVisits().then((visits)=>{
-                                //sort apps by visits
-                                apps.apps.sort((a,b)=>{
-                                    let aVisits = 0;
-                                    let bVisits = 0;
-                                    for(let i = 0; i < visits.main.apps.length; i++){
-                                        if(visits.main.apps[i].route_name == a.id.split('.')[0]){
-                                            aVisits = visits.main.apps[i].visits;
-                                        }
-                                        if(visits.main.apps[i].route_name == b.id.split('.')[0]){
-                                            bVisits = visits.main.apps[i].visits;
-                                        }
-                                    }
-                                    return bVisits - aVisits;
-                                });
-                                res.render('index.ejs',{'appList':apps,visits:visits.main.visitors});
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
-
+        //read games.json
+        let apps =  JSON.parse(fs.readFileSync("public/games.json", "utf8"));
+        apps.games.sort((a, b) => parseFloat(a.ranking) - parseFloat(b.ranking));
+        res.render('index.ejs',{"appList":apps});
 });
 
 
 app.get('/app/:app', (req, res) => {
+
     let app = req.params.app;
-    //check if app exists
-    getVisits().then((visits)=>{
-        res.render('appPage.ejs',{'app':app,visits:visits.main.visitors});
+    database.getGame(app, function(result){
+        if(result[0]){  
+            if(result[0].mirrors==null||result[0].mirrors==undefined||result[0].mirrors==""){
+                result[0].mirrors={};
+            } else{
+                //insert default mirrror at index 0 without overwriting
+                let oldMirrors = result[0].mirrors;
+                oldMirrors = JSON.parse(result[0].mirrors);
+                let newMirrors = [];
+                newMirrors.push({"name":"Main","url":"https://venturebucket.s3.us-east-2.amazonaws.com/games/"+result[0].id+"/index.html"});
+                for(let i=0;i<oldMirrors.length;i++){
+                    newMirrors.push(oldMirrors[i]);
+                }
+                result[0].mirrors=newMirrors;
+
+            }
+
+            res.render('appPage.ejs',{'app':result[0],'visits':0});
+            database.updateGame("visits",result[0].visits+1,app);
+        } else{
+            res.send("Sorry, this game does not exist. </br> <a href='/'>Go Home</a>");
+            return;
+        }
     });
+
 });
 
-
-
 app.get('/visits',(req,res)=>{
-    res.sendFile(__dirname + '/public/visits.json');
+    res.sendFile(__dirname + '/public/games.json');
 });
 
 app.get('/requestapp',(req,res)=>{
-    getVisits().then((visits)=>{
-        res.render('requestapp.ejs',{visits:visits.main.visitors});
+    fs.readFile('public/games.json', 'utf8', function readFileCallback(err, data){
+        if (err){
+            console.log(err);
+        } else {
+            let json=JSON.parse(data);
+            res.render('requestapp.ejs',{visits:json.home_visits});
+        }
     });
+    
+});
+
+
+app.post('/git-update',async (req,res)=>{
+    console.log("Git update request received");
+    const valid = await githookVerifier.verifySecret(req, process.env.GIT_SECRET);
+    if(valid){
+        // git stash then git pull
+        console.log("Git update request verified. RESTARTING SERVER...");
+
+        //git reset --hard HEAD
+        //git pull
+
+        exec('git fetch', (err, stdout, stderr) => {
+            if (err) {
+                console.error(`exec error: ${err}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.log(`stderr: ${stderr}`);
+            exec('git reset --hard origin/master', (err, stdout, stderr) => {
+                if (err) {
+                    console.error(`exec error: ${err}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+            });
+        });
+
+        //this is bullcrap
+
+        res.status(200).send("Git update request verified. Restarting server...");
+        //wait 5 secs
+        setTimeout(function(){
+            console.log("Waiting to restart server...");
+            process.exit(0);
+        },5000);
+
+    } else {
+        res.status(403).send("Git update request not verified");
+    }
 });
 
 
 //accept post request
 app.post('/requestapp',(req,res)=>{
-    //log data from form request
-    //append data to requestapps.json file
-    fs.readFile(__dirname + '/requestapps.json', (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            let file = JSON.parse(data);
-            req.body.id = Date.now();
-            file.requests.push(req.body);
-            fs.writeFile(__dirname + '/requestapps.json', JSON.stringify(file), (err) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    //
-                }
-            });
-        }
-    });
-    //send response
+
+    let app = req.body;
+    let id = Date.now();
+    database.addRequest(app.name,app.email,app['App Name'],id);
     res.redirect('/');
 
 });
@@ -330,17 +268,16 @@ app.get('/rpitemps', function (req, res) {
 }
 );
 
-
 //admin page
-//every hour read visits.json and write to visits.csv
+//every hour read games.json and write to visits.csv
 setInterval(()=>{
-    fs.readFile(__dirname + '/public/visits.json', (err, data) => {
+    fs.readFile(__dirname + '/public/games.json', (err, data) => {
         if (err) {
             console.log(err);
         } else {
-            console.log('reading visits.json');
+            console.log('reading games.json');
             let file = JSON.parse(data);
-            let csv = file.main.visitors + ',' + new Date().toLocaleString() + '\n';
+            let csv = file.home_visits+ ',' + new Date().toLocaleString() + '\n';
             fs.appendFile(__dirname + '/public/visits.csv',csv,(err)=>{
                 if(err){
                     console.log(err);
@@ -350,19 +287,26 @@ setInterval(()=>{
     });
 },3600000);
 
-
-//every 24 hours delete contents of visits.csv and write header
+//every hour delete first line of visits.csv
 setInterval(()=>{
-    console.log('deleting visits.csv contents');
-    fs.writeFile(__dirname + '/public/visits.csv','visitors,date,time\n',(err)=>{
-        if(err){
+    fs.readFile(__dirname + '/public/visits.csv', (err, data) => {
+        if (err) {
             console.log(err);
+        } else {
+            console.log('reading visits.csv');
+            let file = data.toString();
+            let lines = file.split('\n');
+            lines.shift();
+            let newFile = lines.join('\n');
+            fs.writeFile(__dirname + '/public/visits.csv',newFile,(err)=>{
+                if(err){
+                    console.log(err);
+                }
+            }
+            );
         }
     });
-},86400000);
-
-
-
+} ,3600000);
 
 
 
@@ -372,21 +316,15 @@ app.get('/admin',(req,res)=>{
         res.render('admin.ejs',{'authorized':false});
     }
     if(req.cookies.admin == ADMIN_COOKIE){
-        fs.readFile(__dirname + '/requestapps.json', (err, data) => {
-            if (err) {
-                console.log(err);
-            } else {
-                let file = JSON.parse(data);
-                
-                fs.readFile(__dirname + '/public/visits.json', (err, data) => {
-                    if (err) {
-                        console.loyg(err);
-                    } else {
-                        let apps = JSON.parse(data);
-                        res.render('admin.ejs',{'authorized':true,'apps':apps.main.apps,'suggestions':file.requests});
-                    }
-                });
-            }
+        database.getRequests((result)=>{
+            fs.readFile(__dirname + '/public/games.json', (err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    let apps = JSON.parse(data);
+                    res.render('admin.ejs',{'authorized':true,'apps':apps.games,'suggestions':result});
+                }
+            });
         });
     }
 });
@@ -395,66 +333,117 @@ app.post('/admin/removesuggestion/:id',(req,res)=>{
     if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
         res.send('not authorized');
     } else{
-        //find item by id and remove it
-        fs.readFile(__dirname + '/requestapps.json', (err, data) => {
-            if (err) {
-                console.log(err);
-                res.send('error');
-            } else {
-                let file = JSON.parse(data);
-                for(let i = 0; i < file.requests.length; i++){
-                    if(file.requests[i].id == req.params.id){
-                        file.requests.splice(i,1);
-                        break;
-                    }
-                }
-                fs.writeFile(__dirname + '/requestapps.json', JSON.stringify(file), (err) => {
-                    if (err) {
-                        console.log(err);
-                        res.send('error');
-                    } else {
-                        res.send('success');
-                    }
-                });
-            }
-        });
+        database.deleteRequest(req.params.id);
     }
 });
 
-app.post('/admin/removevisits/:id',(req,res)=>{
-    if(req.cookies == undefined||req.cookies.admin != ADMIN_COOKIE){
-        res.send('not authorized');
-    } else{
-        console.log('got rq '+req.params.id);
-        //open /public/visits.json and delete main.apps entry
-        //find item by roue_name and remove it
-        fs.readFile(__dirname + '/public/visits.json', (err, data) => {
-            if (err) {
+let safety = 0;
+function updateGamesJson(){
+    database.updateRankings();
+    database.getGames((dbResult)=>{
+        database.getHomeVisits(process.env.URL,(result)=>{
+            try{
+                home_visits = result[0].home_visits;
+            } catch (err){
                 console.log(err);
-                res.send('error');
-            } else {
-                let file = JSON.parse(data);
-                for(let i = 0; i < file.main.apps.length; i++){
-                    if(file.main.apps[i].route_name == req.params.id){
-                        file.main.apps[i].visits = 0;
-                        break;
-                    }
+                home_visits = safety;
+                console.log("safety");
+            } finally{
+                let games = [];
+                for(let i = 0; i < dbResult.length; i++){
+                    let name = dbResult[i].name;
+                    let id = dbResult[i].id;
+                    let image = dbResult[i].image;
+                    let visits = dbResult[i].visits;
+                    let ranking = dbResult[i].ranking;
+                    let description = dbResult[i].description;
+                    let game = {'name':name,'id':id,'image':image,'visits':visits,'ranking':ranking,'description':description};
+                    games.push(game);
                 }
-                fs.writeFile(__dirname + '/public/visits.json', JSON.stringify(file), (err) => {
+                let gamesJson = {"home_visits": home_visits,'games':games};
+                fs.writeFileSync(__dirname + '/public/games.json', JSON.stringify(gamesJson), (err) => {
                     if (err) {
                         console.log(err);
-                        res.send('error');
-                    } else {
-                        res.send('success');
                     }
                 });
             }
+            
         });
+    });
+}
+
+
+
+function checkMirrors(){
+    fs.readFile(__dirname + '/public/mirrors.json', (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            mirrors = JSON.parse(data);
+            let temp;
+            for(let i = 0; i < mirrors.length; i++){
+                let siteStatus;
+                if(mirrors[i].url.indexOf('https')<0){
+                    temp = https;
+                    https = http;
+                }
+        
+                https.request(mirrors[i].url+'/games.json', { method: 'HEAD' }, (res) => {
+        
+        
+                    if(res.statusCode>=200 && res.statusCode<400){
+                        siteStatus = "Online";
+        
+                    } else{
+                        siteStatus = "Offline";
+                    }
+        
+                    mirrors[i].status = siteStatus;        
+        
+                }).on('error', (err) => {
+                    console.error(err);
+        
+                    siteStatus = "Offline";
+                    mirrors[i].status = siteStatus;
+        
+                }).end();
+                
+        
+                if(temp){
+                    https = temp;
+                }
+            
+            }
+        }
+        fs.writeFile(__dirname + '/public/mirrors.json', JSON.stringify(mirrors), (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Mirrors updated');
+            }
+        });
+
+    });
+
+}
+
+app.get('/ping',(req,res)=>{
+    res.send('{pong: "'+ Date.now().toString()+'"}');
+});
+
+app.get('/testing',(req,res)=>{
+    res.send('testing');
+});
+
+app.get('/mirrors',(req,res)=>{
+    res.render('mirrors.ejs',{'mirrors':mirrors})
+    if((new Date() - lastChecked) > 1000*60*10){
+        checkMirrors();
+        lastChecked = new Date();
     }
 });
-const keepAlive = require('./keepalive.js');
-const e = require('express');
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
 });
+

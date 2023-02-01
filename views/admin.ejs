@@ -34,7 +34,7 @@
                     <td><button onclick="removeSuggestion(<%=suggestions[i]['id']%>);">X</button></td>
                     <td><%=suggestions[i]['email']%></td>
                     <td><p><%=suggestions[i]['name']%></p></td>
-                    <td><p><%=suggestions[i]['App Name']%></p></td>
+                    <td><p><%=suggestions[i]['appname']%></p></td>
                 <%}%>
                 
                 </tr>
@@ -47,28 +47,25 @@
             <script>
 
             </script>
-        </div>"
+        </div>
         
         <div class="visits">
             <h1>Visits</h1>
             <table>
                 <tr>
-                    <th>X</th>
                     <th>Page/File</th>
                     <th>Visits</th>
                 </tr>
                 <%for(let i=0;i<apps.length;i++){%>
                     <%if(apps[i]['visits']!=0){%>
-                    <tr id="<%=apps[i]['route_name']%>">
-                        <td><button onclick="removeVisits('<%=apps[i]["route_name"]%>');">X</button></td>
-                        <td><p><%=apps[i]['route_name']%></p></td>
+                    <tr id="<%=apps[i]['id']%>">
+                        <td><p><%=apps[i]['name']%></p></td>
                         <td><p><%=apps[i]['visits']%></p></td>
                     </tr>
                     <%}%>
                 <%}%>
                 </table>
         </div>
-                
     <%} else{%>
             <h1>Not Authorized</h1>
             <input id="cookieName" placeholder="Name">

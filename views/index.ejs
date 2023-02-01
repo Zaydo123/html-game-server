@@ -9,10 +9,12 @@
     <link href="css/bootstrap-4.4.1.css" rel="stylesheet" />
     <link href="css/index.css" rel="stylesheet" />
     <link rel="manifest" href="/manifest.json" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596539695738361"
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
      crossorigin="anonymous"></script>
   </head>
   <body>
+    <%let maxAds=0%>
+    <% let adsAdded=0 %>
     <!-- Install button, hidden by default -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
@@ -42,16 +44,18 @@
               <a class="nav-link" href="https://github.com/Zaydo123/html-game-server/issues/new/choose" target="_blank">Bug Reports&nbsp; &nbsp;</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/mirrors">Mirror Links</a>
+            </li>
+            <li class="nav-item">
               <button class="add-button"><a class="nav-link">Install</a></button>
             </li>
           </ul>
         </div>
-        <div class="total-visits">
-          <a class="nav" style="color: white; font-size: large">Total Visits: <%=visits%></a>
+        <div hidden="true" class="total-visits">
+          <a class="nav" style="color: white; font-size: large">Total Visits: <%=appList.home_visits%></a>
         </div>
       </div>
     </nav>
-
     <div class="container mt-3">
       <div class="row">
         <div class="col-12">
@@ -140,20 +144,40 @@
           </div>
         </div>
       </div>
-
-      <hr />
+      <div hidden="true" id="announcement" style="text-align:center;padding-top: 10px;"><h6>New Games!</h6></div>
     </div>
     <hr />
     <h2 class="text-center">Games</h2>
     <hr />
     <div class="container">
         <%let r=0;%>
-        <% for(let i=0;i<appList.apps.length ;i++){ %>
+        <% for(let i=0;i<appList.games.length ;i++){ %>
             <% if(i%3==0&&i!=0){%>
                <%r++;%>
+               <% if(adsAdded<maxAds){ %>
+                <div class="homeAds" align="center">
+                  
+                   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
+                        crossorigin="anonymous"></script>
+                   <!-- homepage -->
+                   <ins class="adsbygoogle"
+                        style="display:block"
+                        data-ad-client="ca-pub-3855909962178868"
+                        data-ad-slot="8239070839"
+                        data-ad-format="auto"
+                        data-full-width-responsive="true"></ins>
+                   <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                   </script>
+                  <h4 class="disable-adblock">Please Disable Ad Blocker</h4>
+                  <h5 class="disable-adblock">Thank you.</h5>
+                  <!-- <img src="https://via.placeholder.com/728x90?text=728x90+Leaderboard"> -->
+                </div>  
+                <% adsAdded++;} %>
+
                 <div class="row text-center mt-4">
             <% }else{if(i==0){%><div class="row text-center"><%}} %>
-            <% if((appList.apps.length-1==i)&&(i%3!=0)){ %>
+            <% if((appList.games.length-1==i)&&(i%3!=0)){ %>
               <div class="col-md-4 pb-1 pb-md-0">
                 <div class="card">
 
@@ -169,17 +193,18 @@
               <div class="card">
                 <img
                   class="card-img-top"
-                  <%if(appList.apps[i].photos[0]){%>
-                    src=<%=appList.apps[i].photos[0]%>
+                  loading="lazy"
+                  <%if(appList.games[i].image){%>
+                    src=<%=appList.games[i].image%>
                   <%}else{%>
                     src="images/400x200.gif"
                   <%}%>
                   alt="Card image cap"
                 />
                 <div class="card-body">
-                  <h5 class="card-title"><%=appList.apps[i].name%></h5>
-                  <p class="card-text"><%=appList.apps[i].description%></p>
-                  <a href="/app/<%=appList.apps[i].id%>" class="btn btn-primary">Play Game&nbsp;</a>
+                  <h5 class="card-title"><%=appList.games[i].name%></h5>
+                  <p class="card-text"><%=appList.games[i].description%></p>
+                  <a href="/app/<%=appList.games[i].id%>" class="btn btn-primary">Play Game&nbsp;</a>
                 </div>
               </div>
             </div>
@@ -212,9 +237,9 @@
           </div>
           <div class="col-md-4">
             <h5>Current Projects</h5>
-            <li>Site Unblocker - Ooooooo</li>
-            <li>Flappy Bird - Request by Hadi</li>
-            <li>Minecraft - Multiplayer Possible</li>
+            <li>Roblox</li>
+            <li>Flappy Bird</li>
+            <li>Super Smash Bros</li>
           </div>
         </div>
       </div>
@@ -225,4 +250,13 @@
     <script src="/Plugin/bootstrap-4.4.1.js"></script>
   </body>
   <script src="script.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-B2TMFJVX1K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-B2TMFJVX1K');
+  </script>
 </html>
