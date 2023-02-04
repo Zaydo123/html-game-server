@@ -1,148 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
     <title>HW <%=new Date().toISOString().slice(0, 10)%></title>
-    <link rel="icon" type="image/x-icon" href="doc.ico">
-    <link href="css/bootstrap-4.4.1.css" rel="stylesheet" />
-    <link href="css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/x-icon" href="doc.ico" />
+    <link href="css/gameRequests.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#">Physics Central</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/"
-                >Home <span class="sr-only">(current)</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/requestapp">Game Requests&nbsp;&nbsp;</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://github.com/Zaydo123/html-game-server/issues/new/choose">Bug Reports&nbsp; &nbsp;</a>
-            </li>
-          </ul>
-        </div>
-        <div class="total-visits">
-          <a class="nav" style="color: white; font-size: large">Total Visits: <%=visits%></a>
-        </div>
-      </div>
-    </nav>
+  <header>
+      <nav>
+        <ul>
+          <li href="index.html">
+            <img
+              id="logo"
+              src="images/logos/RocketLogo-nobg@0.5x.png"
+              alt="logo"
+            />
+          </li>
+          <li>
+            <a href="/"><strong>Physics Central</strong></a>
+          </li>
+          <li><a href="/mirrors">Mirrors</a></li>
+          <li><a style="color: #fff;
+                  background-color: rgba(33, 33, 33, 0.7);
+                  border-radius: 10px;
+                  box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.2);" href="#">Requests</a></li>
+			<li><a href="https://github.com/Zaydo123/html-game-server/issues/new" target="_blank">Bug Reports</a></li>
+          <li><a href="mailto:zayd@physics-central.com">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
 
-    <!-- create a large game request form card, that collects game name, email address, and name-->
-    <div class="container" style="padding-bottom: 50px; padding-top: 50px">
-      <div class="card">
-        <div class="card-header">
-          <h1>Game Request Form</h1>
-        </div>
-        <div class="card-body">
-          <form action="/requestapp" method="post">
-            <div class="form-group">
-              <label for="gameName">Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                name="name"
-                placeholder="Enter Name"
-              />
-            </div>
-            <div class="form-group">
-              <label for="emailAddress">Email Address</label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                placeholder="Enter Email Address"
-              />
-            </div>
-            <div class="form-group">
-              <label for="name">Game Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="app_name"
-                name="App Name"
-                placeholder="Enter Game Name"
-              />
-            </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-
-          </form>
-        </div>
+    <div class="signupSection">
+      <div class="info">
+        <h2>Disclaimer&nbsp;</h2>
+        <i class="icon ion-ios-ionic-outline" aria-hidden="true"></i>
+        <p>
+          We will try our <strong>best</strong> to accommodate your request
+          where possible. However, we cannot guarantee that your request will be
+          fulfilled. Please understand that there are limitations for what we
+          can put on a website. </p>
       </div>
+      <form action="/requestapp" class="signupForm" method="post" name="signupform">
+        <h2>Requests</h2>
+        <ul class="noBullet">
+          <li>
+            <label for="Game Name"></label>
+            <input
+              type="text"
+              class="inputFields"
+              id="GameName"
+              name="App Name"
+              placeholder="Game Name*"
+			  required
+            />
+          </li>
+          <li>
+            <label for="Name"></label>
+            <input
+              type="name"
+              class="inputFields"
+              id="name"
+              name="name"
+              placeholder="Name"
+            />
+          </li>
+          <li>
+            <label for="email"></label>
+            <input
+              type="email"
+              class="inputFields"
+              id="email"
+              name="email"
+              placeholder="Email"
+            />
+          </li>
+          <li id="center-btn">
+            <input
+              type="submit"
+              id="join-btn"
+              name="join"
+              alt="Join"
+              value="Submit"
+            />
+          </li>
+        </ul>
+      </form>
     </div>
 
-    <div class="container-md" style="padding-bottom: 300px">
-      <div class="row">
-        <div class="col-md-12" style="padding-bottom: 0px">
-          <div class="card">
-            <div class="card-header">
-              <h3>Disclaimer</h3>
-            </div>
-            <div class="card-body">
-              <p class="card-text">
-                We will try our best to accommodate your request where possible.
-                However, we cannot guarantee that your request will be
-                fulfilled. Please understand that there are limitations for what
-                we can put on a website. For example we cannot fuffill a request
-                for GTA V.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <footer align="center" style="padding-top: 15px">
-      <div class="modal-footer" style="background-color: #343a40">
-        <div class="row" style="color: aliceblue">
-          <div class="col-md-4">
-            <h5>Thank You For The Support!</h5>
-            <p>
-              We really appreciate the support we get from our users. We are
-              always looking for ways to improve our site and make it better for
-              you.
-            </p>
-          </div>
-          <div class="col-md-4">
-            <h5>Here! Steal our site!</h5>
-            <p>
-              Click this link to download the source code for this site. You can
-              use it to make your own site, or just to learn from. We don't
-              care. Just don't steal our name.
-            </p>
-          </div>
-          <div class="col-md-4">
-            <h5>Current Projects</h5>
-            <li>Roblox</li>
-            <li>Flappy Bird</li>
-            <li>Super Smash Bros</li>
-          </div>
-        </div>
+    <footer class="footer">
+      <div>
+        <ul>
+          <li><a href="mailto:support@physics-central.com">Support</a></li>
+          <li><a href="/mirrors">Mirror Links</a></li>
+          <li><a href="/requestapp">Game Requests</a></li>
+          <li><a href="https://github.com/Zaydo123/html-game-server/issues/new" target="_blank">Bug Reports</a></li>
+          <li><a href="#">Coming Soon</a></li>
+        </ul>
       </div>
     </footer>
-    <!-- BootstrapJS -->
-    <script src="Plugin/jquery-3.4.1.min.js"></script>
-    <script src="Plugin/popper.min.js"></script>
-    <script src="Plugin/bootstrap-4.4.1.js"></script>
-    <script src="Plugin/bootstrap-4.4.1.js"></script>
+
+    <!-- SCRIPTS-->
+    <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
+    <link rel="stylesheet" href="https://use.typekit.net/cir1tmq.css" />
   </body>
 </html>
