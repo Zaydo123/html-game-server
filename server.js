@@ -76,47 +76,19 @@ if(fs.existsSync('./public/mirrors.json')){
 
 
 //middleware to parse user agent and block accordingly
-app.use(function(req, res, next) {
-    if(process.env.CHROMEBOOK_ONLY==undefined){
-        next();
-    }else{
-        if((req.get('user-agent').indexOf('CrOS')==-1)&&(process.env.CHROMEBOOK_ONLY == "True")){
-            if(process.env.ALLOWED_USER_AGENTS != undefined){
-                if((process.env.ALLOWED_USER_AGENTS.indexOf(req.get('user-agent')) == -1)){
-                    console.log("User-Agent: "+req.get('user-agent')+" is not allowed to access this site.");
-                    if(req.path.indexOf('/script.js') == -1&&req.path.indexOf('/styles.css') == -1){
-                        res.sendFile(path.join(__dirname+'/public/fakesite/index.html'));
-                    } else{
-                        if(req.path.indexOf('/script.js') != -1){
-                            res.sendFile(path.join(__dirname+'/public/fakesite/script.js'));
-                        }else{
-                            res.sendFile(path.join(__dirname+'/public/fakesite/styles.css'));
-                        }
-                    }
-                } else {
-                next();
-                }
-            } else {
-                if(process.env.CHROMEBOOK_ONLY == "True"){
-                    console.log("User-Agent: "+req.get('user-agent')+" is not allowed to access this site.");
-                    if(req.path.indexOf('/script.js') == -1&&req.path.indexOf('/styles.css') == -1){
-                        res.sendFile(path.join(__dirname+'/public/fakesite/index.html'));
-                    } else{
-                        if(req.path.indexOf('/script.js') != -1){
-                            res.sendFile(path.join(__dirname+'/public/fakesite/script.js'));
-                        }else{
-                            res.sendFile(path.join(__dirname+'/public/fakesite/styles.css'));
-                        }
-                    }
-                } else{
-                    next();
-                }
-            }
+if(process.env.CHROMEBOOK_ONLY){
+    const chromeBookOnly = process.env.CHROMEBOOK_ONLY === "true" || process.env.CHROMEBOOK_ONLY === "True";
+    app.use(function(req, res, next) {
+        if (!chromeBookOnly || req.get("User-Agent").indexOf("CrOS") !=-1){
+          next();
         } else {
-            next();
+          res.status(403).send("Access restricted to Chromebook devices only");
         }
-    }
-});
+    });
+
+}
+
+
 
     
 //visitor counter middleware
