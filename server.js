@@ -360,7 +360,7 @@ function checkMirrors(){
                     https = http;
                 }
         
-                https.request(mirrors[i].url+'/games.json', { method: 'HEAD' }, (res) => {
+                https.request(mirrors[i].url+'/games.json', { method: 'HEAD', headers: { 'User-Agent': 'CrOS' }}, (res) => {
         
         
                     if(res.statusCode>=200 && res.statusCode<400){
