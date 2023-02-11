@@ -6,7 +6,6 @@ const path = require("path");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
-const sharp = require('sharp');
 const exec = require('child_process').exec;
 const sql = require('./database');
 const e = require('express');
