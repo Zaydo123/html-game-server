@@ -51,8 +51,7 @@ function decrementSlide(){
   setImage(currentIndex);
 
 }
-
-setInterval(incrementSlide,7000);
-
+// temporarily off
+//setInterval(incrementSlide,7000);
 
 
