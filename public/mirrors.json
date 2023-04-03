@@ -1,1 +1,38 @@
-[{"name":"Physics Central","url":"https://physics-central.com","official":true,"author":"Zayd","github":"https://github.com/Zaydo123/html-game-server","status":"Online"},{"name":"Venture X Jewelry","url":"http://venturexjewelry.com","official":true,"author":"Zayd","status":"Online"},{"name":"Algebra Tools","url":"https://algebratools.com","official":true,"author":"Zayd","status":"Online"},{"name":"aiwriter.dev","url":"https://aiwriter.dev","official":true,"author":"Zayd","status":"Online"}]
+[
+    {
+        "name": "Physics Central",
+        "url": "https://physics-central.com",
+        "official": true,
+        "author": "Zayd",
+        "github": "https://github.com/Zaydo123/html-game-server",
+        "status": "Online"
+    },
+    {
+        "name": "Venture X Jewelry",
+        "url": "http://venturexjewelry.com",
+        "official": true,
+        "author": "Zayd",
+        "status": "Online"
+    },
+    {
+        "name": "Algebra Tools",
+        "url": "https://algebratools.com",
+        "official": true,
+        "author": "Zayd",
+        "status": "Online"
+    },
+    {
+        "name": "aiwriter.dev",
+        "url": "https://aiwriter.dev",
+        "official": true,
+        "author": "Zayd",
+        "status": "Online"
+    },
+    {
+        "name": "mathcalculator.lol",
+        "url": "https://mathcalculator.lol",
+        "official": true,
+        "author": "Zayd",
+        "status": "Online"
+    }
+]
