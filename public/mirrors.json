@@ -34,5 +34,12 @@
         "official": true,
         "author": "Zayd",
         "status": "Online"
+    },
+    {
+        "name": "UnblockedGames.lol",
+        "url":"https://unblockedgames.lol",
+        "official":true,
+        "author":"Zayd",
+        "status":"Online"
     }
 ]

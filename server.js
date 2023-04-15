@@ -81,7 +81,11 @@ if(process.env.CHROMEBOOK_ONLY){
         if (!chromeBookOnly || req.get("User-Agent").indexOf("CrOS") !=-1){
           next();
         } else {
-          res.status(403).send("Access restricted to Chromebook devices only");
+            if(req.url.indexOf("git-update")>-1){
+                next();
+            } else{
+                res.status(403).send("Access restricted to Chromebook devices only");                
+            }
         }
     });
 
