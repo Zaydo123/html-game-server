@@ -196,6 +196,11 @@ input[type="submit"] {
   }
 }
 
+.game-header:hover{
+  transition: all 0.6s ease-in-out;
+  transform: scale(1.1);
+}
+
 /*Game Cards and stuff*/
 .game-header {
   background: #8762d0;
@@ -207,7 +212,12 @@ input[type="submit"] {
   margin-right: 17.5%;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
 }
+
+
+
+
 .game-grid {
   margin: auto;
   display: flex;

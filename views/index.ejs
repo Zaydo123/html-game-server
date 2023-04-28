@@ -7,6 +7,8 @@
     <link rel="icon" type="image/x-icon" href="doc.ico" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
      crossorigin="anonymous"></script>
+    <script async src="search-for-games.js"></script>
+
   </head>
   <body>
     <header>
@@ -106,7 +108,17 @@
       </div>
 
       <section id="games">
-        <h2 class="game-header">Featured Games</h2>
+        <h2 class="game-header" onmouseover="showSearch()">Featured Games
+        <div class="search-box">
+          <input
+            id="search-bar"
+            type="text"
+            class="search-bar"
+            placeholder="Search for a game..."
+            oninput="searchGames()"
+          />
+        </h2>
+        </div>
         <div class="game-grid">
           <% for(let i=0;i<appList.games.length ;i++){ %>
             <div class="game-card">
