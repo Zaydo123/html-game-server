@@ -243,6 +243,19 @@ app.get('/rpitemps', function (req, res) {
 }
 );
 
+//make a route that accepts a url and returns the image at that url
+app.get('/fetch-image', function (req, res) {
+    let url = req.query.url;
+    if(url==undefined||url==null||url==""){
+        res.send("No url provided");
+        return;
+    }
+    https.get(url, function(response) {
+        response.pipe(res);
+    });
+});
+
+
 //admin page
 //every hour read games.json and write to visits.csv
 setInterval(()=>{
