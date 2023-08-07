@@ -16,46 +16,31 @@
   </head>
   <body>
     <!-- Install button, hidden by default -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="/">Physics Central</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/"
-                >Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/requestapp">Game Requests&nbsp;&nbsp;</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://github.com/Zaydo123/html-game-server/issues/new/choose" target="_blank">Bug Reports&nbsp; &nbsp;</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/mirrors">Mirrors&nbsp;&nbsp;</a>
-            </li>
-            <li class="nav-item">
-              <button hidden='true' class="add-button"><a class="nav-link">Install</a></button>
-            </li>
-          </ul>
-        </div>
-        <div hidden="true" class="total-visits">
-          <a class="nav" style="color: white; font-size: large">Total Visits: <%=visits%></a>
-        </div>
-      </div>
-    </nav>
-    <hr />
+    <header>
+      <nav>
+        <ul>
+          <li>
+            <img
+              id="logo"
+              src="../images/logos/RocketLogo-nobg@0.5x.png"
+              alt="logo"
+			  href="index.html"
+            />
+          </li>
+          <li>
+            <a style="color: #fff;
+                  background-color: rgba(33, 33, 33, 0.7);
+                  border-radius: 10px;
+                  box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.2);" href="#"><strong>Physics Central</strong></a>
+          </li>
+          <li><a href="/mirrors">Mirrors</a></li>
+          <li><a href="/requestapp">Requests</a></li>
+		  <li><a href="https://github.com/Zaydo123/html-game-server/issues/new" target="_blank">Bug Reports</a></li>
+          <li><a href="mailto:zayd@physics-central.com">Contact</a></li>
+
+		  </ul>
+      </nav>
+    </header>
 
 
 
@@ -75,25 +60,14 @@
         crossorigin="anonymous"></script>
         <!-- leftIframe -->
         <ins class="adsbygoogle"
-             style="display:inline-block;width:140px;height:280px"
+             style="display:inline-block;width:140px;height:480px"
              data-ad-client="ca-pub-3855909962178868"
              data-ad-slot="4563054865"></ins>
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
       </div>
-      <div class="ADS" id="AD-RIGHT">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
-        crossorigin="anonymous"></script>
-        <!-- iframeright -->
-        <ins class="adsbygoogle"
-             style="display:inline-block;width:140px;height:280px"
-             data-ad-client="ca-pub-3855909962178868"
-             data-ad-slot="4585986036"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
+     
 
 
       <!------------------------------------------------------------------------------------------->
@@ -140,6 +114,18 @@
 
             </script>
           <%}%>
+          <div class="ADS" id="AD-RIGHT">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
+            crossorigin="anonymous"></script>
+            <!-- iframeright -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:140px;height:480px"
+                 data-ad-client="ca-pub-3855909962178868"
+                 data-ad-slot="4585986036"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
 
 
     </div>
@@ -167,11 +153,11 @@
     </script>
     <hr />
 
-    <footer>
+    <footer class="gamepage-footer">
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-            <h5>Thank You For The Support!</h5>
+            <h5>Thank You For The Support</h5>
             <p>
               We really appreciate the support we get from our users. We are
               always looking for ways to improve our site and make it better for
@@ -187,26 +173,15 @@
             </p>
           </div>
           <div class="col-md-4">
-            <h5>Shoutout</h5>
-            <li>Hadi</li>
-            <li>Tayseer</li>
-            <li>Zane</li>
+            <h5>Help us out</h5>
+            <p>
+              If you want to help us out, please request games you'd like to see! We will try to add them as soon as possible.
+            </p>
           </div>
-          
+
         </div>
       </div>
-      <div align="center" class="ADS-footer" id="footer">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3855909962178868"
-             crossorigin="anonymous"></script>
-        <!-- footer -->
-        <ins class="adsbygoogle"
-             style="display:inline-block;width:728px;height:90px"
-             data-ad-client="ca-pub-3855909962178868"
-             data-ad-slot="2510487036"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
+     
     </footer>
     <!-- BootstrapJS -->
     <script src="/Plugin/jquery-3.4.1.min.js"></script>
