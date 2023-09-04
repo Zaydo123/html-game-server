@@ -5,7 +5,7 @@
     <title>HW <%=new Date().toISOString().slice(0, 10)%></title>
     <link href="css/index.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/x-icon" href="doc.ico" />
-    <script async src="search-for-games.js"></script>
+    <script async src="js/extras/search-for-games.js"></script>
 
   </head>
   <body>
@@ -34,6 +34,53 @@
 		  </ul>
       </nav>
     </header>
+
+    <!-- alert at top of screen that says update coming soon. new games and features available at physics-beta.com -->
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';"
+        >&times;</span
+      >
+      <strong>Update:</strong> New games and features available at
+      <a href="https://physics-beta.com" target="_blank">physics-beta.com</a>! Update coming soon to this site.
+    </div>
+
+    <style>
+      .alert {
+        padding: 20px;
+        background-color: #f44336;
+        color: white;
+        opacity: 1;
+        transition: opacity 0.6s;
+        margin-bottom: 15px;
+      }
+
+      .alert.success {
+        background-color: #4caf50;
+      }
+
+      .alert.info {
+        background-color: #2196f3;
+      }
+
+      .alert.warning {
+        background-color: #ff9800;
+      }
+
+      .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .closebtn:hover {
+        color: black;
+      }
+    </style>
 
     <main>
 
@@ -176,6 +223,6 @@
     <!-- SCRIPTS-->
     <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
     <link rel="stylesheet" href="https://use.typekit.net/cir1tmq.css" />
-    <script src="/slider.js"></script>
+    <script src="js/extras/slider.js"></script>
   </body>
 </html>
